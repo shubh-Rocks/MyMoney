@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useAuth } from "@/provider/AuthProvider";
 import { useEffect, useRef, useState } from "react";
 import CustomAvatar from "../dashboard/CustomAvatar";
+import ExcelExportButton from "../ui/ExcelExportButton";
 
 const Navbar = () => {
   const { user, isLoading, logout } = useAuth();
@@ -45,6 +46,7 @@ const Navbar = () => {
         <Link href="/help">Help</Link>
       </div>
 
+      <ExcelExportButton />
       <div className="flex gap-5 mr-10">
         {isLoading ? (
           <div className="w-4 h-4 rounded-full border-2 border-t-cynan animate-spin"></div>
