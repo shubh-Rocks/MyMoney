@@ -36,10 +36,14 @@ model Borrower{
   id          Int              @id @default(autoincrement())
   userId      Int
   name        String
-  phone       String           @unique
   email       String           @unique
+  phone       String           @unique
   notes       String?
-  address     String?
+  street      String
+  city        String
+  state       String
+  pincode     String
+
 
   user        User             @relation(fields: [userId], references: [id],onDelete: Cascade)
   loans       Loan[] 

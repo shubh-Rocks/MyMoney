@@ -2,18 +2,13 @@
 import Link from "next/link";
 import { useAuth } from "@/provider/AuthProvider"; // Apna sahi path confirm kar lein
 
-
-
 export default function LoginPage() {
   const { login, loginState, isLoginPending } = useAuth();
 
   return (
-    // Main Background: Dark Navy (#0E3B53)
     <div className="min-h-screen bg-[#e5f7db] flex items-center justify-center p-4">
-      {/* Login Card: Cream/Off-white (#FAF7EF) */}
       <div className="w-full max-w-md bg-[#FAF7EF] rounded-2xl p-8 shadow-2xl">
         <div className="text-center mb-8">
-          {/* Headings: Dark Navy for high contrast */}
           <h2 className="text-3xl font-bold text-[#0E3B53] mb-2 tracking-tight">
             Welcome Back
           </h2>

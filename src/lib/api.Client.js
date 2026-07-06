@@ -1,4 +1,3 @@
-import { PUT } from "@/app/api/user/profile/route";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "";
 
@@ -57,9 +56,17 @@ class ApiClient {
     return this.request("/api/auth/me");
   }
 
-  async updatedUser(){
-    return this.request("/api/user/profile",{method:PUT})
-  }
+  // user method
+  // async updatedUser() {
+  //   return this.request("/api/user/profile", { method: "PUT" });
+  // }
+
+  // async addBorrower(borrowerData) {
+  //   return this.request("api/addLoan", {
+  //     method: "POST",
+  //     body: JSON.stringify(borrowerData),
+  //   });
+  // }
 }
 
 export const apiCLient = new ApiClient();

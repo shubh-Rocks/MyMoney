@@ -1,3 +1,5 @@
+"use client"
+import FormModal from "@/components/dashboard/form/FormModal";
 import QuickAddCard from "@/components/dashboard/QuickAddCard";
 import StateCard from "@/components/dashboard/StateCard";
 import VoiceAssistanceCard from "@/components/dashboard/VoiceAssistanceCard";
@@ -10,6 +12,7 @@ export default function () {
         <QuickAddCard />
         <VoiceAssistanceCard />
       </div>
+      <FormModal />
     </div>
   );
 }
