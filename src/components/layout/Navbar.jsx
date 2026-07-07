@@ -8,6 +8,7 @@ import { useAuth } from "@/provider/AuthProvider";
 import { useEffect, useRef, useState } from "react";
 import CustomAvatar from "../dashboard/CustomAvatar";
 import ExcelExportButton from "../ui/ExcelExportButton";
+import { ChevronDown } from "lucide-react";
 
 const Navbar = () => {
   const { user, isLoading, logout } = useAuth();
@@ -45,7 +46,6 @@ const Navbar = () => {
         <Link href="/contact">Contacts</Link>
         <Link href="/help">Help</Link>
       </div>
-
       <ExcelExportButton />
       <div className="flex gap-5 mr-10">
         {isLoading ? (
@@ -57,11 +57,12 @@ const Navbar = () => {
           </div>
         ) : (
           // LOGGED IN
-          <div className="relative" ref={isDropdownRef}>
-            <button
-              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              className="flex items-center gap-2 focus:outline-none"
-            >
+
+          <div
+            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            className="w-60 bg-amber-500 flex px-3 py-1 items-center gap-1.5 rounded-2xl cursor-pointer"
+          >
+            <div className="relative" ref={isDropdownRef}>
               {user.avatar ? (
                 <img
                   src={user.avatar}
@@ -74,37 +75,48 @@ const Navbar = () => {
                   className="w-10 h-10 hover:border-cyan-400 transition-all hover:shadow-[0_0_10px_rgba(34,211,238,0.5)]"
                 />
               )}
-            </button>
 
-            {/* Dropdown Menu */}
-            {isDropdownOpen && (
-              <div className="absolute right-0 mt-3 w-56 rounded-xl bg-gray-900/90 backdrop-blur-xl border border-white/10 shadow-[0_0_20px_rgba(0,0,0,0.5)] overflow-hidden">
-                <div className="px-4 py-3 border-b border-white/10">
-                  <p className="text-sm text-white font-medium truncate">
-                    {user.name}
-                  </p>
-                  <p className="text-xs text-gray-400 truncate">{user.email}</p>
+              {/* Dropdown Menu */}
+              {isDropdownOpen && (
+                <div className="absolute right-0 mt-3 w-56 rounded-xl bg-[#f6f8fa] backdrop-blur-xl border border-white/10 shadow-[0_0_20px_rgba(0,0,0,0.5)] overflow-hidden">
+                  <div className="px-4 py-3 border-b border-white/10">
+                    <p className="text-sm text-white font-medium truncate">
+                      {user.name}
+                    </p>
+                    <p className="text-xs text-gray-400 truncate">
+                      {user.email}
+                    </p>
+                  </div>
+
+                  <Link
+                    href="/profile"
+                    onClick={() => setIsDropdownOpen(false)}
+                    className="block px-4 py-2 text-sm text-gray-300 hover:bg-white/5 hover:text-cyan-400 transition-colors"
+                  >
+                    Edit Profile
+                  </Link>
+
+                  <button
+                    onClick={() => {
+                      setIsDropdownOpen(false);
+                      logout();
+                    }}
+                    className="block w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-red-500/10 transition-colors"
+                  >
+                    Logout
+                  </button>
                 </div>
-
-                <Link
-                  href="/profile"
-                  onClick={() => setIsDropdownOpen(false)}
-                  className="block px-4 py-2 text-sm text-gray-300 hover:bg-white/5 hover:text-cyan-400 transition-colors"
-                >
-                  Edit Profile
-                </Link>
-
-                <button
-                  onClick={() => {
-                    setIsDropdownOpen(false);
-                    logout();
-                  }}
-                  className="block w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-red-500/10 transition-colors"
-                >
-                  Logout
-                </button>
-              </div>
-            )}
+              )}
+            </div>
+            <div className="flex flex-col">
+              <span className="font-semibold text-black/80 ">{user.name}</span>
+              <span className="font-normal text-gray-500 text-[12px]">
+                {user.email}
+              </span>
+            </div>
+            <span className="text-gray-500 ">
+              <ChevronDown size={18} />
+            </span>
           </div>
         )}
       </div>

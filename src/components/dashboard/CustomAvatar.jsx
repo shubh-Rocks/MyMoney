@@ -3,7 +3,7 @@ import React from "react";
 const CustomAvatar = ({ name, className = "" }) => {
   const getInitials = (userName ) => {
     if (!userName) return "u";
-    const nameSplit = userName.trim().split("");
+    const nameSplit = userName.trim().split(" ");
 
     if (nameSplit.length >= 2) {
       return nameSplit[0][0].toUpperCase() + nameSplit[nameSplit.length - 1][0].toUpperCase();
