@@ -30,6 +30,15 @@ export async function POST(request) {
         { status: 409 },
       );
     }
+    if (phone && phone !== "") {
+      const existingPhone = await prisma.user.findUnique({ where: { phone } });
+      if (existingPhone) {
+        return NextResponse.json(
+          { error: "Phone number already registered" },
+          { status: 409 },
+        );
+      }
+    }
     const hashedPassword = await hashPassword(password);
     const user = await prisma.user.create({
       data: {
@@ -60,11 +69,11 @@ export async function POST(request) {
         name: user.name,
         email: user.email,
       },
-      
+
       { status: 201 },
     );
   } catch (error) {
-    console.error("registrtion failed");
+    console.error("registrtion failed", error);
     return NextResponse.json(
       {
         error: "Somthing went wrong",

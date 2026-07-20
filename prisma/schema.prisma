@@ -117,7 +117,7 @@ model Payment{
 
 }
 
-enum LoanStatus{
+enum LoanStatus {
   ACTIVE
   Partially_PAID
   PAID

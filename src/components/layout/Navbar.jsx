@@ -57,7 +57,7 @@ const Navbar = () => {
           </div>
         ) : (
           // LOGGED IN
-          < >
+          <>
             <ExcelExportButton />
             <div
               ref={isDropdownRef}
@@ -91,7 +91,7 @@ const Navbar = () => {
                     </div>
 
                     <Link
-                      href="/profile"
+                      href="/dashboard/profile"
                       onClick={() => setIsDropdownOpen(false)}
                       className="block px-4 py-2 text-sm text-black hover:bg-white/5 hover:text-cyan-400 transition-colors"
                     >
@@ -103,7 +103,7 @@ const Navbar = () => {
                         setIsDropdownOpen(false);
                         logout();
                       }}
-                      className="block w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-red-500/10 transition-colors"
+                      className="block w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-red-500/10 transition-colors cursor-pointer"
                     >
                       Logout
                     </button>

@@ -79,11 +79,12 @@ export const AuthProvider = ({ children }) => {
         loginState,
         isLoginPending,
         isLoading,
-        updateLocalUser
+        updateLocalUser,
       }}
     >
       {children}
     </AuthContext.Provider>
+
   );
 };
 

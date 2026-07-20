@@ -1,4 +1,3 @@
-
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "";
 
 class ApiClient {
@@ -30,7 +29,7 @@ class ApiClient {
     return response.json();
   }
 
-  //    Auth method
+  //    Auth methods
 
   async register(userData) {
     return this.request("/api/auth/register", {
@@ -56,17 +55,14 @@ class ApiClient {
     return this.request("/api/auth/me");
   }
 
-  // user method
-  // async updatedUser() {
-  //   return this.request("/api/user/profile", { method: "PUT" });
-  // }
+  // Profile update method
 
-  // async addBorrower(borrowerData) {
-  //   return this.request("api/addLoan", {
-  //     method: "POST",
-  //     body: JSON.stringify(borrowerData),
-  //   });
-  // }
+  async updateProfile(profileData) {
+    return this.request("/api/user/profile", {
+      method: "PATCH",
+      body: JSON.stringify({ profileData }),
+    });
+  }
 }
 
 export const apiCLient = new ApiClient();
