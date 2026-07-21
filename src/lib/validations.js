@@ -60,5 +60,13 @@ export const updateProfileSchema = z.object({
     .max(50)
     .optional(),
 
-  password: z.string().min(6).optional(),
+  phone: z
+    .string()
+    .min(10, "Phone number must be at least 10 digits")
+    .optional(),
+
+  password: z
+    .string()
+    .min(6, "Password must be at least 6 characters")
+    .optional(),
 });

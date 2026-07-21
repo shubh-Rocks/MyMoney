@@ -60,7 +60,7 @@ class ApiClient {
   async updateProfile(profileData) {
     return this.request("/api/user/profile", {
       method: "PATCH",
-      body: JSON.stringify({ profileData }),
+      body: JSON.stringify(profileData),
     });
   }
 }

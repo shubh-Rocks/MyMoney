@@ -17,6 +17,7 @@ export async function PATCH(request) {
     const userId = decodePayload.id;
 
     const body = await request.json();
+
     const result = updateProfileSchema.safeParse(body);
 
     if (!result.success) {
@@ -51,6 +52,8 @@ export async function PATCH(request) {
       }
       updateData.phone = phone;
     }
+
+    console.log("Sending to Prisma:", updateData);
 
     const updatedUser = await prisma.user.update({
       where: { id: userId },
