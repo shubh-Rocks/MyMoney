@@ -1,62 +1,77 @@
-import { generateToken, verifyPassword } from "@/lib/auth";
-import prisma from "@/lib/prisma";
+import { AppError } from "@/errors/app-error";
+import { authService } from "@/services/auth.service";
+import { loginSchema } from "@/validations/auth.validations";
 import { NextResponse } from "next/server";
+import { Suspense } from "react";
+import { success, ZodError } from "zod";
 
 export async function POST(request) {
   try {
-    const { email, password } = await request.json();
+    const body = await request.json();
 
-    if (!email || !password) {
-      return NextResponse.json(
-        {
-          error: "Email & Password is required or not valid",
+    const validatedData = loginSchema.parse(body);
+
+    const { user, token } = await authService.login(validatedData);
+
+    const response = NextResponse.json(
+      {
+        success: true,
+        data: {
+          user,
         },
-        { status: 400 },
-      );
-    }
-
-    const userFromDb = await prisma.user.findUnique({ where: { email } });
-
-    if (!userFromDb) {
-      return NextResponse.json(
-        { message: "invalid user not found" },
-        { status: 401 },
-      );
-    }
-    const isValidPassword = await verifyPassword(password, userFromDb.password);
-
-    if (!isValidPassword) {
-      return NextResponse.json(
-        { message: "invalid credentials" },
-        { status: 401 },
-      );
-    }
-
-    const token = await generateToken(userFromDb);
-
-    const response = NextResponse.json({
-      user: {
-        id: userFromDb.id,
-        name: userFromDb.name,
-        email: userFromDb.email,
-        image: userFromDb.image,
-        emailVerified: userFromDb.emailVerified,
-        token,
       },
-    });
+      {
+        status: 200,
+      },
+    );
 
     response.cookies.set("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
       maxAge: 60 * 60 * 24 * 7,
+      path: "/",
     });
 
     return response;
   } catch (error) {
-    console.error("login failed", error);
+    if (error instanceof ZodError) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: {
+            code: "VALIDATION_ERROR",
+            message: "invalid login data",
+            details: error.issues,
+          },
+        },
+        { status: 400 },
+      );
+    }
+    if (error instanceof AppError) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: {
+            code: error.code,
+            message: error.message,
+          },
+        },
+        {
+          status: error.statusCode,
+        },
+      );
+    }
+
+    console.error("post/api/auth/login failed:", error);
     return NextResponse.json(
-      { error: "internal server error" },
+      {
+        success: false,
+        error: {
+          code: "INTERNAL_ERROR",
+          message: "internal server error",
+        },
+      },
       { status: 500 },
     );
   }
