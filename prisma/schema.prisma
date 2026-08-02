@@ -12,116 +12,191 @@ datasource db {
   provider = "postgresql"
 }
 
-model User{
- id            Int           @id @default(autoincrement())
- name          String 
- email         String        @unique
- phone         String?       @unique
- password      String 
- image         String? 
- emailVerified DateTime? 
-
- borrowers  Borrower[]
- loans      Loan[]
- payments   Payment[]
- auditLogs  AuditLogs[]
-
- createdAt  DateTime @default(now())
- updatedAt  DateTime @updatedAt
-
- @@map("users")
-}
-
-model Borrower{
-  id          Int              @id @default(autoincrement())
-  userId      Int
-  name        String
-  email       String           @unique
-  phone       String           @unique
-  notes       String?
-  street      String
-  city        String
-  state       String
-  pincode     String
-
-
-  user        User             @relation(fields: [userId], references: [id],onDelete: Cascade)
-  loans       Loan[] 
-
-
-  createdAt   DateTime         @default(now())
-  updatedAt   DateTime         @updatedAt
-
-  @@unique([userId,phone])
-  @@map ("borrowers")  
-
-}
-
-model Loan{
-  id             Int           @id @default(autoincrement())
-  userId         Int            
-  borrowerId     Int        
-
-  amount         Decimal       @db.Decimal(15,2)
-  interestRate   Decimal       @default(0) @db.Decimal(5,2)
-  interestType   String        @default("simple")
-
-  lentDate       DateTime      
-  dueDate        DateTime
-
-  status         LoanStatus    @default(ACTIVE)
-  notes          String?
-  isDeleted      Boolean
-  user           User          @relation(fields: [userId] , references: [id],onDelete: Cascade ) 
-  borrower      Borrower       @relation(fields: [borrowerId],references: [id],onDelete: Restrict)
-
-  payments      Payment[]
-
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
-
-  @@map("loans")
-}
-
-
-model AuditLogs{
-  id           Int         @id @default(autoincrement())
-  userId       Int
-  entityType   String
-  entityId     Int
-  action       String
-  oldValues    Json?
-  newValues    Json?
-  
-  user         User        @relation(fields: [userId],references: [id])
-  createdAt    DateTime    @default(now())
-  
-  @@map("audit_logs")
-}
-model Payment{
-  id               Int        @id @default(autoincrement())
-  loanId           Int
-  userId           Int
-
-  amount           Decimal    @db.Decimal(15,2)
-  paymentDate      DateTime
-  PaymentMethods   String     @default("cash")
-  notes            String?
- 
-  user              User       @relation(fields:[userId],references: [id],onDelete: Cascade)
-  loan              Loan       @relation(fields: [loanId],references: [id],onDelete: Cascade)
-
-  createdAt         DateTime   @default(now())
-
-  @@map("payments")
-
-}
-
 enum LoanStatus {
   ACTIVE
-  Partially_PAID
+  PARTIALLY_PAID
   PAID
   OVERDUE
   CANCELLED
 }
 
+enum InterestType {
+  SIMPLE
+  COMPOUND
+}
+
+enum PaymentMethod {
+  CASH
+  UPI
+  NEFT
+  CHEQUE
+  BANK_TRANSFER
+}
+
+enum AuditAction {
+  CREATED
+  UPDATED
+  DELETED
+  RESTORED
+}
+
+enum EntityType {
+  LOAN
+  LOAN_PAYMENT
+  BORROWER
+  USER
+  USER_PROFILE
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+  PREFER_NOT_TO_SAY
+}
+
+model User {
+  id           Int    @id @default(autoincrement())
+  email        String @unique
+  passwordHash String
+
+  profile      UserProfile?
+  borrowers    Borrower[]
+  loans        Loan[]
+  loanPayments LoanPayment[]
+  auditLogs    AuditLog[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
+
+model UserProfile {
+  userId Int @id
+
+  fullName     String
+  phone        String  @unique
+  businessName String
+  avatarUrl    String?
+  gender       Gender?
+
+  emailVerified Boolean @default(false)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("user_profiles")
+}
+
+model Borrower {
+  id     Int @id @default(autoincrement())
+  userId Int
+
+  name  String
+  email String
+  phone String
+  notes String?
+
+  street  String
+  city    String
+  state   String
+  pincode String
+
+  isDeleted Boolean @default(false)
+
+  user  User   @relation(fields: [userId], references: [id], onDelete: Restrict)
+  loans Loan[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, email])
+  @@unique([userId, phone])
+  @@index([userId, isDeleted])
+  @@map("borrowers")
+}
+
+model Loan {
+  id Int @id @default(autoincrement())
+
+  userId     Int
+  borrowerId Int
+
+  amount       Decimal      @db.Decimal(15, 2)
+  interestRate Decimal      @default(0) @db.Decimal(5, 2)
+  interestType InterestType @default(SIMPLE)
+
+  lentDate DateTime
+  dueDate  DateTime
+
+  status LoanStatus @default(ACTIVE)
+
+  notes String?
+
+  isDeleted Boolean @default(false)
+
+  user     User     @relation(fields: [userId], references: [id], onDelete: Restrict)
+  borrower Borrower @relation(fields: [borrowerId], references: [id], onDelete: Restrict)
+
+  payments LoanPayment[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId, status])
+  @@index([userId, isDeleted])
+  @@index([borrowerId])
+  @@index([dueDate])
+  @@map("loans")
+}
+
+model LoanPayment {
+  id Int @id @default(autoincrement())
+
+  loanId Int
+  userId Int
+
+  amount Decimal @db.Decimal(15, 2)
+
+  paymentDate   DateTime
+  paymentMethod PaymentMethod @default(CASH)
+
+  referenceNumber String?
+  notes           String?
+
+  loan Loan @relation(fields: [loanId], references: [id], onDelete: Restrict)
+  user User @relation(fields: [userId], references: [id], onDelete: Restrict)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([loanId, paymentDate])
+  @@index([userId, paymentDate])
+  @@map("loan_payments")
+}
+
+model AuditLog {
+  id Int @id @default(autoincrement())
+
+  userId Int
+
+  entityType EntityType
+  entityId   Int
+
+  action AuditAction
+
+  oldValues Json?
+  newValues Json?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Restrict)
+
+  createdAt DateTime @default(now())
+
+  @@index([userId, createdAt])
+  @@index([entityType, entityId])
+  @@index([entityType, entityId, createdAt])
+  @@map("audit_logs")
+}
