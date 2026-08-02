@@ -1,7 +1,7 @@
 "use client";
 
 import { apiCLient } from "@/lib/api.Client";
-import { loginSchema } from "@/lib/validations";
+import { loginSchema } from "@/validations/auth.validations";
 import { useRouter } from "next/navigation";
 import {
   createContext,
@@ -84,7 +84,6 @@ export const AuthProvider = ({ children }) => {
     >
       {children}
     </AuthContext.Provider>
-
   );
 };
 
