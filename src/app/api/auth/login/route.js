@@ -2,16 +2,25 @@ import { AppError } from "@/errors/app-error";
 import { authService } from "@/services/auth.service";
 import { loginSchema } from "@/validations/auth.validations";
 import { NextResponse } from "next/server";
-import { Suspense } from "react";
-import { success, ZodError } from "zod";
+import z, { ZodError } from "zod";
 
-export async function POST(request) {
+export async function POST(req) {
   try {
-    const body = await request.json();
+    const body = await req.json();
 
-    const validatedData = loginSchema.parse(body);
+    const validatedData = loginSchema.safeParse(body);
 
-    const { user, token } = await authService.login(validatedData);
+    if (!validatedData.success) {
+      return NextResponse.json(
+        {
+          error: "Validation failed",
+          details: z.flattenError(validatedData.error),
+        },
+        { status: 400 },
+      );
+    }
+
+    const { user, token } = await authService.login(validatedData.data);
 
     const response = NextResponse.json(
       {

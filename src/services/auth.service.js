@@ -1,5 +1,5 @@
 import { AppError } from "@/errors/app-error";
-import { generateToken, verifyPassword } from "@/lib/auth";
+import { generateToken, hashPassword, verifyPassword } from "@/lib/auth";
 import { userRepository } from "@/repositories/user.repository";
 
 class AuthService {
@@ -30,6 +30,43 @@ class AuthService {
         id: user.id,
         email: user.email,
       },
+      token,
+    };
+  }
+
+  async register({ fullName, email, password, phone, businessName }) {
+    const existingEmail = await userRepository.findByEmail(email);
+    if (existingEmail) {
+      throw new AppError("Email Already exist ", 401, INVALID_CREDENTIALS);
+    }
+
+    if (phone) {
+      const existingPhone = await userRepository.findByPhone(phone);
+      if (existingPhone) {
+        throw new AppError(
+          "Phone number already registerd",
+          401,
+          INVALID_CREDENTIALS,
+        );
+      }
+    }
+
+    const passwordHash = await hashPassword(password);
+    const user = await userRepository.createWithProfile({
+      fullName,
+      email,
+      passwordHash,
+
+      profile: {
+        fullName,
+        phone,
+        businessName,
+      },
+    });
+
+    const token = await generateToken(user);
+    return {
+      user,
       token,
     };
   }

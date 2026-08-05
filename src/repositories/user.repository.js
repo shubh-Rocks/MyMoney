@@ -16,6 +16,39 @@ class UserRepositry {
       },
     });
   }
+
+  findByPhone(phone) {
+    return prisma.user.findFirst({
+      where: {
+        profile: {
+          phone: phone,
+        },
+      },
+    });
+  }
+
+  createWithProfile({ fullName, email, passwordHash, profile }) {
+    return prisma.user.create({
+      data: {
+        email,
+        passwordHash,
+        profile: {
+          create: profile,
+        },
+      },
+      select: {
+        id: true,
+        email: true,
+        profile: {
+          select: {
+            fullName: true,
+            phone: true,
+            businessName: true,
+          },
+        },
+      },
+    });
+  }
 }
 
 export const userRepository = new UserRepositry();

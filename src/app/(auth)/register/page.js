@@ -1,6 +1,6 @@
 "use client";
 import { apiCLient } from "@/lib/api.Client";
-import { registerSchema } from "@/lib/validations";
+import { registerSchema } from "@/validations/auth.validations";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useActionState } from "react";

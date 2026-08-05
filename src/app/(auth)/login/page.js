@@ -1,7 +1,6 @@
 "use client";
 import Link from "next/link";
-import { useAuth } from "@/provider/AuthProvider"; // Apna sahi path confirm kar lein
-
+import { useAuth } from "@/provider/AuthProvider"; 
 export default function LoginPage() {
   const { login, loginState, isLoginPending } = useAuth();
 
