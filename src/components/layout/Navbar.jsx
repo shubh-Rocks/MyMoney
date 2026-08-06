@@ -11,7 +11,8 @@ import ExcelExportButton from "../ui/ExcelExportButton";
 import { ChevronDown } from "lucide-react";
 
 const Navbar = () => {
-  const { user, isLoading, logout } = useAuth();
+  const { user: rawUser, isLoading, logout } = useAuth();
+  const user = rawUser?.data?.user || rawUser?.user || rawUser;
   const [isDropdownOpen, setIsDropdownOpen] = useState(null);
   const isDropdownRef = useRef(null);
 
@@ -28,6 +29,9 @@ const Navbar = () => {
     return () =>
       document.removeEventListener("mousedown", handleClickedOutside);
   }, []);
+  console.log("CHECK USER OBJECT:", user);
+  console.log("CHECK PROFILE:", user?.profile);
+  console.log("CHECK FULLNAME:", user?.profile?.fullName);
   return (
     <div className="bg-white backdrop:blur-3xl font-semibold px-8 py-4 border border-[#0e3b53]/20 flex items-center justify-between rounded-b-3xl sticky top-0 z-50">
       <div className="flex items-center gap-3">
@@ -73,7 +77,7 @@ const Navbar = () => {
                   />
                 ) : (
                   <CustomAvatar
-                    name={user.name}
+                    fullName={user?.profile?.fullName}
                     className="w-10 h-10 hover:border-cyan-400 transition-all hover:shadow-[0_0_10px_rgba(34,211,238,0.5)]"
                   />
                 )}
@@ -83,10 +87,10 @@ const Navbar = () => {
                   <div className="absolute left-0 mt-3 w-56 rounded-xl bg-[#f6f8fa] backdrop-blur-xl border border-white/10 shadow-[0_0_20px_rgba(0,0,0,0.5)] overflow-hidden">
                     <div className="px-4 py-3 border-b border-white/10">
                       <p className="text-sm text-black font-medium truncate">
-                        {user.name}
+                        {user?.profile?.fullName || user?.name || "User"}
                       </p>
                       <p className="text-xs text-gray-700 truncate">
-                        {user.email}
+                        {user?.email}
                       </p>
                     </div>
 
@@ -112,10 +116,10 @@ const Navbar = () => {
               </div>
               <div className="flex flex-col">
                 <span className="font-semibold text-black/80 ">
-                  {user.name}
+                  {user?.profile?.fullName || user?.name || "User"}
                 </span>
                 <span className="font-normal text-gray-500 text-[12px]">
-                  {user.email}
+                  {user?.profile?.fullName || user?.name || "User"}
                 </span>
               </div>
               <span className="text-gray-500 ">

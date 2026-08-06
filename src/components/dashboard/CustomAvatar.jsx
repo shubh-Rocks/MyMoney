@@ -1,12 +1,15 @@
 import React from "react";
 
-const CustomAvatar = ({ name, className = "" }) => {
-  const getInitials = (userName ) => {
+const CustomAvatar = ({ fullName, className = "" }) => {
+  const getInitials = (userName) => {
     if (!userName) return "u";
     const nameSplit = userName.trim().split(" ");
 
     if (nameSplit.length >= 2) {
-      return nameSplit[0][0].toUpperCase() + nameSplit[nameSplit.length - 1][0].toUpperCase();
+      return (
+        nameSplit[0][0].toUpperCase() +
+        nameSplit[nameSplit.length - 1][0].toUpperCase()
+      );
     }
     return userName.substring(0, 2).toUpperCase();
   };
@@ -28,8 +31,8 @@ const CustomAvatar = ({ name, className = "" }) => {
     return colors[sum % colors.length];
   };
 
-  const initials = getInitials(name);
-  const bgColor = getAvatarColors(name);
+  const initials = getInitials(fullName);
+  const bgColor = getAvatarColors(fullName);
 
   return (
     <div
