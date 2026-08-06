@@ -1,19 +1,63 @@
-import { getCurrentUser } from "@/lib/auth";
+import { AppError } from "@/errors/app-error";
+import { verifyToken } from "@/lib/auth";
+import { authService } from "@/services/auth.service";
+import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
-    const user = await getCurrentUser();
+    const cookieStore = await cookies();
+    const token = cookieStore.get("token")?.value;
 
-    if (!user) {
+    if (!token) {
       return NextResponse.json(
-        { error: "You are not authenticated" },
+        {
+          success: false,
+          error: "UNAUTHENTICATED",
+          message: "you are not authenticated",
+        },
         { status: 401 },
       );
     }
-    return NextResponse.json(user);
+
+    const decoded = await verifyToken(token);
+
+    if (!decoded) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: {
+            code: "INVALID TOKEN",
+            message: "you are not authenticated",
+          },
+        },
+        { status: 401 },
+      );
+    }
+
+    const user = await authService.getCurrentUser(decoded.id);
+
+    return NextResponse.json(
+      {
+        success: true,
+        data: {
+          user,
+        },
+      },
+      { status: 200 },
+    );
   } catch (error) {
-    console.log("error:", error);
-    return NextResponse.json({ error: "internal server" }, { status: 500 });
+    if (error instanceof AppError) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: {
+            code: error.code,
+            message: error.message,
+          },
+        },
+        { status: error.statusCode },
+      );
+    }
   }
 }

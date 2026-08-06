@@ -1,7 +1,5 @@
 import { NextResponse } from "next/server";
 
-/** * @param {import('next/server').NextRequest} request
- */
 export function proxy(request) {
   const token = request.cookies.get("token");
   const url = request.nextUrl.clone();

@@ -70,6 +70,16 @@ class AuthService {
       token,
     };
   }
+
+  async getCurrentUser(userId) {
+    const user = await userRepository.findById(userId);
+
+    if (!user) {
+      throw new AppError("user not found", 404, "USER_NOT_FOUND");
+    }
+
+    return user;
+  }
 }
 
 export const authService = new AuthService();

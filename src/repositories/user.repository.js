@@ -14,6 +14,23 @@ class UserRepositry {
       where: {
         id,
       },
+      select: {
+        id: true,
+        email: true,
+        createdAt: true,
+        updatedAt: true,
+
+        profile: {
+          select: {
+            fullName: true,
+            phone: true,
+            businessName: true,
+            avatarUrl: true,
+            gender: true,
+            emailVerified: true,
+          },
+        },
+      },
     });
   }
 
