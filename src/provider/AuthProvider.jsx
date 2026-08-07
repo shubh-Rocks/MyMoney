@@ -1,6 +1,6 @@
 "use client";
 
-import { apiCLient } from "@/lib/api.Client";
+import { apiClient } from "@/lib/api.Client";
 import { loginSchema } from "@/validations/auth.validations";
 import { useRouter } from "next/navigation";
 import {
@@ -21,7 +21,7 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const loadUser = async () => {
       try {
-        const userData = await apiCLient.getCurrentUser();
+        const userData = await apiClient.getCurrentUser();
         setUser(userData || null);
       } catch (error) {
         console.error("user not found", error);

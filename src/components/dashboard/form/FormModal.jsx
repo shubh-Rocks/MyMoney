@@ -10,7 +10,8 @@ const FormModal = ({ isOpen, setIsOpen }) => {
           onClick={() => setIsOpen(false)}
         >
           <div
-            className="bg-white rounded-2xl shadow-xl w-full max-w-lg max-h-[90vh] overflow-y-auto"
+            // Yahan classes update ki hain scrollbar hide karne ke liye
+            className="bg-white rounded-2xl shadow-xl w-full max-w-lg max-h-[90vh] overflow-y-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:bg-gray-300  [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
@@ -64,10 +65,21 @@ const FormModal = ({ isOpen, setIsOpen }) => {
                   className="w-full px-3 text-black py-2 border border-gray-300 rounded-lg text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition"
                 />
               </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Amount
+                </label>
+                <input
+                  name="amount"
+                  type="number"
+                  placeholder="Enter amount 100000"
+                  className="w-full px-3 text-black py-2 border border-gray-300 rounded-lg text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition"
+                />
+              </div>
 
               {/* Address section */}
               <div className="pt-2">
-                <h2 className="text-sm font-semibold text-gray-700 mb-3 border-b border-gray-100 pb-2">
+                <h2 className="text-2xl font-semibold text-gray-700 mb-3 border-b border-gray-100 pb-2">
                   Address Details
                 </h2>
 
