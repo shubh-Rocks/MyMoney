@@ -55,12 +55,21 @@ class ApiClient {
     return this.request("/api/auth/me");
   }
 
+  
   // Profile update method
 
   async updateProfile(profileData) {
     return this.request("/api/user/profile", {
       method: "PATCH",
       body: JSON.stringify(profileData),
+    });
+  }
+
+  // borrower methods
+  async addBorrower(borrowerData) {
+    return this.request("/api/borrower/", {
+      method: "POST",
+      body: JSON.stringify(borrowerData),
     });
   }
 }
