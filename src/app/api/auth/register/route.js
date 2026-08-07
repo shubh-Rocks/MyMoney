@@ -1,9 +1,8 @@
 import { AppError } from "@/errors/app-error";
 import { authService } from "@/services/auth.service";
 import { registerSchema } from "@/validations/auth.validations";
-import { INTERNALS } from "next/dist/server/web/spec-extension/request";
 import { NextResponse } from "next/server";
-import z, { success, ZodError } from "zod";
+import z, { ZodError } from "zod";
 
 export async function POST(req) {
   try {
