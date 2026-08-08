@@ -1,5 +1,5 @@
 "use client";
-import { apiCLient } from "@/lib/api.Client";
+import { apiClient } from "@/lib/api.Client";
 import { useAuth } from "@/provider/AuthProvider";
 import React, { useEffect, useState } from "react";
 import CustomAvatar from "../CustomAvatar";
@@ -23,7 +23,7 @@ const ProfileForm = () => {
     setIsUpdating(true);
 
     try {
-      const response = await apiCLient.updateProfile({ name, phone });
+      const response = await apiClient.updateProfile({ name, phone });
       updateLocalUser({ ...user, name: name, phone: phone });
 
       alert("profile updated sucessfully!");

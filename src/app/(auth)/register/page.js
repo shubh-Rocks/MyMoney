@@ -1,5 +1,5 @@
 "use client";
-import { apiCLient } from "@/lib/api.Client";
+import { apiClient } from "@/lib/api.Client";
 import { registerSchema } from "@/validations/auth.validations";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -25,7 +25,7 @@ export default function RegisterPage() {
         };
       }
       try {
-        await apiCLient.register(validatedFields.data);
+        await apiClient.register(validatedFields.data);
         router.push("/dashboard");
       } catch (error) {
         return {
