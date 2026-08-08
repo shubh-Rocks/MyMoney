@@ -44,13 +44,16 @@ export async function POST(req) {
       });
     }
     if (error instanceof AppError) {
-      return NextResponse.json({
-        sucess: false,
-        error: {
-          code: error.code,
-          message: error.message,
+      return NextResponse.json(
+        {
+          sucess: false,
+          error: {
+            code: error.code,
+            message: error.message,
+          },
         },
-      });
+        { status: error.statusCode },
+      );
     }
 
     console.log("post/api/auth/register failed:", error);

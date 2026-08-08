@@ -1,5 +1,7 @@
 import { AppError } from "@/errors/app-error";
+import prisma from "@/lib/prisma";
 import { borrowerRepositry } from "@/repositories/borrower.repository";
+import { loanRepository } from "@/repositories/loan.repository";
 
 class BorrowerService {
   async createBorrower({
@@ -7,17 +9,24 @@ class BorrowerService {
     name,
     email,
     phone,
+
     street,
     city,
     state,
     pincode,
+
+    amount,
+    interestRate,
+    interestType,
+    lentDate,
+    dueDate,
   }) {
-    const existingEmail = await borrowerRepositry.findByEmail(email);
+    const existingEmail = await borrowerRepositry.findByEmail(userId, email);
     if (existingEmail) {
       throw new AppError("Email already exists", 409, "EMAIL_ALREADY_EXISTS");
     }
 
-    const existingPhone = await borrowerRepositry.findByPhone(phone);
+    const existingPhone = await borrowerRepositry.findByPhone(userId, phone);
     if (existingPhone) {
       throw new AppError(
         "Phone number already exists please give different number",
@@ -25,7 +34,7 @@ class BorrowerService {
         "PHONE_ALREADY_EXISTS",
       );
     }
-    const borrower = await borrowerRepositry.createBorrower({
+    const borrowerData = {
       userId,
       name,
       email,
@@ -34,9 +43,26 @@ class BorrowerService {
       city,
       state,
       pincode,
-    });
+    };
+    const loanData = {
+      userId,
+      amount,
+      interestRate,
+      interestType,
+      lentDate,
+      dueDate,
+    };
 
-    return borrower;
+    return prisma.$transaction(async (tx) => {
+      const borrower = await borrowerRepositry.createBorrower(tx, borrowerData);
+
+      const loan = await loanRepository.createLoan(tx, {
+        ...loanData,
+        borrowerId: borrower.id,
+      });
+
+      return borrower;
+    });
   }
 }
 

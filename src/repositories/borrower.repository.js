@@ -1,25 +1,27 @@
 import prisma from "@/lib/prisma";
 
 class BorrowerRepositry {
-  async findByEmail(email) {
-    return await prisma.borrower.findUnique({
+  findByEmail(userId, email) {
+    return prisma.borrower.findUnique({
       where: {
-        email,
+        userId_email: {
+          userId,
+          email,
+        },
       },
     });
   }
 
-  async findByPhone(phone) {
-    return await prisma.borrower.findUnique({
+  findByPhone(userId, phone) {
+    return prisma.borrower.findUnique({
       where: {
-        phone,
+        userId_phone: { userId, phone },
       },
     });
   }
-  
 
-  createBorrower(data) {
-    return prisma.borrower.create({
+  createBorrower(tx, data) {
+    return tx.borrower.create({
       data,
     });
   }
