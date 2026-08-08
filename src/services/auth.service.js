@@ -37,7 +37,7 @@ class AuthService {
   async register({ fullName, email, password, phone, businessName }) {
     const existingEmail = await userRepository.findByEmail(email);
     if (existingEmail) {
-      throw new AppError("Email Already exist ", 401, INVALID_CREDENTIALS);
+      throw new AppError("Email Already exist ", 409, INVALID_CREDENTIALS);
     }
 
     if (phone) {
@@ -45,7 +45,7 @@ class AuthService {
       if (existingPhone) {
         throw new AppError(
           "Phone number already registerd",
-          401,
+          409,
           INVALID_CREDENTIALS,
         );
       }
