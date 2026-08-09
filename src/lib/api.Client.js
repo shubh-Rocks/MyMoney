@@ -55,7 +55,6 @@ class ApiClient {
     return this.request("/api/auth/me");
   }
 
-  
   // Profile update method
 
   async updateProfile(profileData) {
@@ -67,9 +66,17 @@ class ApiClient {
 
   // borrower methods
   async addBorrower(borrowerData) {
-    return this.request("/api/borrower/", {
+    return this.request("/api/borrowers/", {
       method: "POST",
       body: JSON.stringify(borrowerData),
+    });
+  }
+
+  // Loanpayment methods
+  async addLoanPayment(LoanpaymentsData) {
+    return this.request("/api/payments", {
+      method: "POST",
+      body: JSON.stringify(LoanpaymentsData),
     });
   }
 }
