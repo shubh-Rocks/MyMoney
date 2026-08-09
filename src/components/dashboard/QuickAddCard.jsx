@@ -19,7 +19,7 @@ const QuickAddCard = () => {
           className="bg-white text-emerald-600 flex items-center justify-center gap-1 cursor-pointer font-bold px-5 py-2 rounded-xl hover:-translate-y-0.5 hover:shadow-md transition"
         >
           <Plus size={15} strokeWidth={3.5} />
-          Quick Add Loan
+          Add Borrower
         </button>
       </div>
       {isOpen && <FormModal isOpen={isOpen} setIsOpen={setIsOpen} />}

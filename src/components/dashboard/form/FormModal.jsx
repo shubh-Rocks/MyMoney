@@ -31,7 +31,7 @@ const FormModal = ({ isOpen, setIsOpen }) => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                   Borrower Name
+                    Borrower Name
                   </label>
                   <input
                     name="name"
@@ -54,12 +54,34 @@ const FormModal = ({ isOpen, setIsOpen }) => {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                   Lending Amount
+                    Email
+                  </label>
+                  <input
+                    name="email"
+                    type="email"
+                    placeholder="john@example.com"
+                    className="w-full px-3 text-black py-2 border border-gray-300 rounded-lg text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Lending Amount
                   </label>
                   <input
                     name="amount"
                     type="number"
                     placeholder="Enter amount 100000"
+                    className="w-full px-3 text-black py-2 border border-gray-300 rounded-lg text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Interest Type
+                  </label>
+                  <input
+                    name="interestType "
+                    type="text"
+                    placeholder="Enter interest rate 7%"
                     className="w-full px-3 text-black py-2 border border-gray-300 rounded-lg text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition"
                   />
                 </div>
@@ -74,18 +96,28 @@ const FormModal = ({ isOpen, setIsOpen }) => {
                     className="w-full px-3 text-black py-2 border border-gray-300 rounded-lg text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition"
                   />
                 </div>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Email
-                </label>
-                <input
-                  name="email"
-                  type="email"
-                  placeholder="john@example.com"
-                  className="w-full px-3 text-black py-2 border border-gray-300 rounded-lg text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition"
-                />
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Lent Date
+                  </label>
+                  <input
+                    name="interestType "
+                    type="date"
+                    placeholder="Enter interest rate 7%"
+                    className="w-full px-3 text-black py-2 border border-gray-300 rounded-lg text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Due Date
+                  </label>
+                  <input
+                    name="interestType "
+                    type="date"
+                    placeholder="Enter interest rate 7%"
+                    className="w-full px-3 text-black py-2 border border-gray-300 rounded-lg text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition"
+                  />
+                </div>
               </div>
 
               {/* Address section */}
@@ -95,31 +127,18 @@ const FormModal = ({ isOpen, setIsOpen }) => {
                 </h2>
 
                 <div className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Street
-                    </label>
-                    <input
-                      name="address.street"
-                      type="text"
-                      placeholder="MG Road"
-                      className="w-full px-3 text-black py-2 border border-gray-300 rounded-lg text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition"
-                    />
-                  </div>
-
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Area
+                        Street
                       </label>
                       <input
-                        name="address.area"
+                        name="address.street"
                         type="text"
-                        placeholder="Civil Lines"
+                        placeholder="MG Road"
                         className="w-full px-3 text-black py-2 border border-gray-300 rounded-lg text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition"
                       />
                     </div>
-
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
                         City
@@ -131,9 +150,6 @@ const FormModal = ({ isOpen, setIsOpen }) => {
                         className="w-full px-3 text-black py-2 border border-gray-300 rounded-lg text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition"
                       />
                     </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
                         State
