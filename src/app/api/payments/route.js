@@ -1,7 +1,7 @@
 import { AppError } from "@/errors/app-error";
 import { verifyToken } from "@/lib/auth";
 import { authService } from "@/services/auth.service";
-import { loanPaymentService } from "@/services/Loan.Payments.service";
+import { loanPaymentService } from "@/services/loan.Payments.service";
 import { loanPaymentSchema } from "@/validations/loan.Payments.validation";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";

@@ -1,6 +1,6 @@
 import { AppError } from "@/errors/app-error";
 import prisma from "@/lib/prisma";
-import { loanPaymentRepository } from "@/repositories/loan.Payment.repository";
+import { loanPaymentRepository } from "@/repositories/loan.Payments.repository";
 import { loanRepository } from "@/repositories/loan.repository";
 
 class LoanPayment {
@@ -47,15 +47,19 @@ class LoanPayment {
 
     const newStatus = newRemainingAmount === 0 ? "PAID" : "PARTIALLY_PAID";
 
+    const paymentData = {
+      userId,
+      loanId,
+      amount,
+      paymentDate,
+      paymentMethod,
+      notes,
+    };
     return prisma.$transaction(async (tx) => {
-      const payment = await loanPaymentRepository.createPayment(tx, {
-        userId,
-        loanId,
-        amount,
-        paymentDate,
-        paymentMethod,
-        notes,
-      });
+      const payment = await loanPaymentRepository.createPayment(
+        tx,
+        paymentData,
+      );
 
       await loanRepository.updateLoan(tx, loan.id, {
         totalPaid: newTotalPaid,

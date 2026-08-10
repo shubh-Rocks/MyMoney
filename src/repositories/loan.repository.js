@@ -1,5 +1,8 @@
 import prisma from "@/lib/prisma";
 
+/**
+ * @param {import('@prisma/client').Prisma.TransactionClient} tx
+ */
 class LoanRepository {
   findByLoanId(loanId) {
     return prisma.loan.findUnique({
@@ -16,8 +19,8 @@ class LoanRepository {
   }
 
   updateLoan(tx, loanId, data) {
-    return tx.loan.create({
-      loanId,
+    return tx.loan.update({
+      where: { id: loanId },
       data,
     });
   }
