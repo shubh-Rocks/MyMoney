@@ -51,6 +51,7 @@ class BorrowerService {
       interestType,
       lentDate,
       dueDate,
+      remainingAmount: amount,
     };
 
     return prisma.$transaction(async (tx) => {

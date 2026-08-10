@@ -14,6 +14,13 @@ class LoanRepository {
       data,
     });
   }
+
+  updateLoan(tx, loanId, data) {
+    return tx.loan.create({
+      loanId,
+      data,
+    });
+  }
 }
 
 export const loanRepository = new LoanRepository();
