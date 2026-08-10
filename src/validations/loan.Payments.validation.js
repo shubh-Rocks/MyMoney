@@ -1,6 +1,6 @@
 import z from "zod";
 
-export const loanPayment = object({
+export const loanPaymentSchema = z.object({
   loanId: z.coerce.bigint().positive(),
   amount: z.coerce.number().positive("number should be positive"),
   paymentDate: z.coerce.date(),

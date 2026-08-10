@@ -5,13 +5,13 @@ import { borrowerService } from "@/services/borrower.service";
 import { createBorrowerWithLoanSchema } from "@/validations/borrower.validation";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-import z, { ZodError } from "zod";
+import z from "zod";
 
 export async function POST(req) {
   try {
     const cookieStore = await cookies();
     const token = cookieStore.get("token")?.value;
-    
+
     if (!token) {
       return NextResponse.json(
         {
