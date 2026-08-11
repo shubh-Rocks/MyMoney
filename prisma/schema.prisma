@@ -129,6 +129,9 @@ model Loan {
   interestRate Decimal      @default(0) @db.Decimal(5, 2)
   interestType InterestType @default(SIMPLE)
 
+  remainingAmount Decimal @db.Decimal(15, 2)
+  totalPaid       Decimal @default(0) @db.Decimal(15, 2)
+
   lentDate DateTime
   dueDate  DateTime
 

@@ -1,8 +1,5 @@
 import prisma from "@/lib/prisma";
 
-/**
- * @param {import('@prisma/client').Prisma.TransactionClient} tx
- */
 class LoanRepository {
   findByLoanId(loanId) {
     return prisma.loan.findUnique({

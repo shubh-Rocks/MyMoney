@@ -1,17 +1,25 @@
 import { AppError } from "@/errors/app-error";
 import prisma from "@/lib/prisma";
-import { loanPaymentRepository } from "@/repositories/loan.Payments.repository";
+import { loanPaymentRepository } from "@/repositories/loan.payments.repository";
 import { loanRepository } from "@/repositories/loan.repository";
 
-class LoanPayment {
-  async loanPaymentService(
+class LoanPaymentService {
+  async createPayment({
     userId,
     loanId,
     amount,
     paymentDate,
     paymentMethod,
     notes,
-  ) {
+  }) {
+    console.log("PAYMENT SERVICE DATA:", {
+      userId,
+      loanId,
+      amount,
+      paymentDate,
+      paymentMethod,
+      notes,
+    });
     const loan = await loanRepository.findByLoanId(loanId);
 
     if (!loan) {
@@ -41,11 +49,11 @@ class LoanPayment {
       );
     }
 
-    const newTotalPaid = loan.totalPaid + amount;
+    const newTotalPaid = loan.totalPaid.plus(amount);
 
-    const newRemainingAmount = loan.remainingAmount - amount;
+    const newRemainingAmount = loan.remainingAmount.minus(amount);
 
-    const newStatus = newRemainingAmount === 0 ? "PAID" : "PARTIALLY_PAID";
+    const newStatus = newRemainingAmount.equals(0) ? "PAID" : "PARTIALLY_PAID";
 
     const paymentData = {
       userId,
@@ -77,4 +85,4 @@ class LoanPayment {
   }
 }
 
-export const loanPaymentService = new LoanPayment();
+export const loanPaymentService = new LoanPaymentService();
