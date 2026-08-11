@@ -76,14 +76,17 @@ class ApiClient {
     return this.request("/api/borrowers");
   }
 
-  
-
   // Loanpayment methods
   async addLoanPayment(LoanpaymentsData) {
     return this.request("/api/payments", {
       method: "POST",
       body: JSON.stringify(LoanpaymentsData),
     });
+  }
+
+  // Dashboard methods
+  async BorrowersLoanSummary() {
+    return history.request("/api/dasboard");
   }
 }
 
