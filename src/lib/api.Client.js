@@ -66,11 +66,17 @@ class ApiClient {
 
   // borrower methods
   async addBorrower(borrowerData) {
-    return this.request("/api/borrowers/", {
+    return this.request("/api/borrowers", {
       method: "POST",
       body: JSON.stringify(borrowerData),
     });
   }
+
+  async getBorrower() {
+    return this.request("/api/borrowers");
+  }
+
+  
 
   // Loanpayment methods
   async addLoanPayment(LoanpaymentsData) {

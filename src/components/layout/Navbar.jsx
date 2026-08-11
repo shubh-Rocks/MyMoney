@@ -29,9 +29,6 @@ const Navbar = () => {
     return () =>
       document.removeEventListener("mousedown", handleClickedOutside);
   }, []);
-  console.log("CHECK USER OBJECT:", user);
-  console.log("CHECK PROFILE:", user?.profile);
-  console.log("CHECK FULLNAME:", user?.profile?.fullName);
   return (
     <div className="bg-white backdrop:blur-3xl font-semibold px-8 py-4 border border-[#0e3b53]/20 flex items-center justify-between rounded-b-3xl sticky top-0 z-50">
       <div className="flex items-center gap-3">

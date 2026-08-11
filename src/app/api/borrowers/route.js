@@ -90,3 +90,53 @@ export async function POST(req) {
     );
   }
 }
+
+export async function GET() {
+  try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get("token")?.value;
+    if (!token) {
+      return NextResponse.json(
+        {
+          message: "unauthorized",
+        },
+        { status: 401 },
+      );
+    }
+
+    const decodedPayload = await verifyToken(token);
+    const userId = decodedPayload.id;
+
+    const currentUser = await authService.getCurrentUser(userId);
+
+
+
+    
+    return NextResponse.json(
+      {
+        message: "borrower and loan fetch sucessfully",
+      },
+      { status: 200 },
+    );
+  } catch (error) {
+    if (error instanceof AppError) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: {
+            code: error.code,
+            error: error.message,
+          },
+        },
+        { status: error.statusCode },
+      );
+    }
+
+    return NextResponse.json(
+      {
+        message: "internal server error",
+      },
+      { status: 500 },
+    );
+  }
+}
