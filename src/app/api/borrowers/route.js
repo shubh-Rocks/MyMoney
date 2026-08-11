@@ -109,16 +109,17 @@ export async function GET() {
 
     const currentUser = await authService.getCurrentUser(userId);
 
+    const borrowers = await borrowerService.getAllBorrower(currentUser.id);
 
-
-    
     return NextResponse.json(
       {
         message: "borrower and loan fetch sucessfully",
+        borrowers,
       },
       { status: 200 },
     );
   } catch (error) {
+    console.log("api error ", error);
     if (error instanceof AppError) {
       return NextResponse.json(
         {

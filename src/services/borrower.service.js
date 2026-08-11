@@ -4,6 +4,12 @@ import { borrowerRepositry } from "@/repositories/borrower.repository";
 import { loanRepository } from "@/repositories/loan.repository";
 
 class BorrowerService {
+  async getAllBorrower(userId) {
+    const allBorrower = await borrowerRepositry.findAllByUser();
+
+    return allBorrower;
+  }
+
   async createBorrower({
     userId,
     name,
