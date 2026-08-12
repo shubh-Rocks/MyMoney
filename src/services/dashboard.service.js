@@ -5,7 +5,7 @@ class DasboardService {
     const totalLentamount =
       await dashboardRepository.getTotalLentAmount(userId);
     const totalPendingAmount =
-      await dashboardRepository.getPendingAmount(userId);
+      await dashboardRepository.getTotalPendingAmount(userId);
     const todayDueamount = await dashboardRepository.getTodayDueAmount(userId);
     const overdueamount = await dashboardRepository.getOverdueAmount(userId);
 
