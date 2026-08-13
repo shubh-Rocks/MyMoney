@@ -12,12 +12,17 @@ class LoanPaymentRepository {
       where: {
         userId: userId,
       },
-      include: {
+
+      select: {
+        id: true,
+        amount: true,
+        paymentDate: true,
+        paymentMethod: true,
+      
         loan: {
-          include: {
+          select: {
             borrower: {
               select: {
-                id: true,
                 name: true,
               },
             },
