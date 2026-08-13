@@ -84,6 +84,12 @@ class ApiClient {
     });
   }
 
+  async recentPayments() {
+    return this.request("/api/payments/recent");
+  }
+
+
+  
   // Dashboard methods
   async BorrowersLoanSummary() {
     return history.request("/api/dasboard");
