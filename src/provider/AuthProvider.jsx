@@ -32,7 +32,7 @@ export const AuthProvider = ({ children }) => {
     loadUser();
   }, []);
 
-  const [loginState, logingAction, isLoginPending] = useActionState(
+  const [loginState, loginAction, isLoginPending] = useActionState(
     async (prevState, formData) => {
       const email = formData.get("email");
       const password = formData.get("password");
@@ -45,7 +45,7 @@ export const AuthProvider = ({ children }) => {
       }
 
       try {
-        const data = await apiCLient.login(email, password);
+        const data = await apiClient.login(email, password);
         setUser(data.user);
         router.push("/dashboard");
         return { success: true, user: data.user };
@@ -58,7 +58,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      await apiCLient.logout();
+      await apiClient.logout();
       setUser(null);
       router.push("/login");
     } catch (error) {
@@ -74,7 +74,7 @@ export const AuthProvider = ({ children }) => {
     <AuthContext.Provider
       value={{
         user,
-        login: logingAction,
+        login: loginAction,
         logout,
         loginState,
         isLoginPending,
