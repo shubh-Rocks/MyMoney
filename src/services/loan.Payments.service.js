@@ -12,14 +12,6 @@ class LoanPaymentService {
     paymentMethod,
     notes,
   }) {
-    console.log("PAYMENT SERVICE DATA:", {
-      userId,
-      loanId,
-      amount,
-      paymentDate,
-      paymentMethod,
-      notes,
-    });
     const loan = await loanRepository.findByLoanId(loanId);
 
     if (!loan) {
@@ -82,6 +74,12 @@ class LoanPaymentService {
         status: newStatus,
       };
     });
+  }
+
+  async recentPayments(userId) {
+    const getAllRecentPayments =
+      await loanPaymentRepository.recentPayments(userId);
+    return getAllRecentPayments;
   }
 }
 
