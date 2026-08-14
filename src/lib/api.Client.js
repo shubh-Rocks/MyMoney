@@ -88,11 +88,9 @@ class ApiClient {
     return this.request("/api/payments/recent");
   }
 
-
-  
   // Dashboard methods
   async BorrowersLoanSummary() {
-    return history.request("/api/dasboard");
+    return this.request("/api/dashboard");
   }
 }
 
