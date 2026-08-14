@@ -63,7 +63,7 @@ const DashboardStatCard = () => {
     },
   ];
   return (
-    <div className="p-8  bg-slate-50 min-h-screen">
+    <div className="p-8 bg-[#f6f8fa] ">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {cardConfig.map((card) => (
           <StatCard

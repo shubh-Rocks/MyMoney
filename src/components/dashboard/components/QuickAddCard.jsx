@@ -1,7 +1,7 @@
 "use client";
 import { Plus } from "lucide-react";
 import React, { useState } from "react";
-import FormModal from "./form/FormModal";
+import FormModal from "@/components/dashboard/form/FormModal";
 
 const QuickAddCard = () => {
   const [isOpen, setIsOpen] = useState(false);

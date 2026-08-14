@@ -6,7 +6,7 @@ import GetStarted from "../ui/GetStarted";
 import Link from "next/link";
 import { useAuth } from "@/provider/AuthProvider";
 import { useEffect, useRef, useState } from "react";
-import CustomAvatar from "../dashboard/CustomAvatar";
+import CustomAvatar from "../dashboard//components/CustomAvatar";
 import ExcelExportButton from "../ui/ExcelExportButton";
 import { ChevronDown } from "lucide-react";
 

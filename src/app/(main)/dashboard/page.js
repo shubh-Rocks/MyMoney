@@ -1,13 +1,13 @@
 "use client";
-import DashboardStatCard from "@/components/dashboard/DashboardStatCard";
+import DashboardStatCard from "@/components/dashboard/components/DashboardStatCard";
 import FormModal from "@/components/dashboard/form/FormModal";
-import QuickAddCard from "@/components/dashboard/QuickAddCard";
-import VoiceAssistanceCard from "@/components/dashboard/VoiceAssistanceCard";
+import QuickAddCard from "@/components/dashboard/components/QuickAddCard";
+import VoiceAssistanceCard from "@/components/dashboard/components/VoiceAssistanceCard";
 
 export default function () {
   return (
     <div className=" bg-[#f6f8fa] min-h-screen py-10 px-5">
-      <DashboardStatCard/>
+      <DashboardStatCard />
       <div className="flex">
         <QuickAddCard />
         <VoiceAssistanceCard />
