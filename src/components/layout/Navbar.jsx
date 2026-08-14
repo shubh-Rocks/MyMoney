@@ -43,8 +43,8 @@ const Navbar = () => {
       </div>
       <div className="flex gap-5">
         <Link href="/home">Home</Link>
-        <Link href="/about">About</Link>
-        <Link href="/contact">Contacts</Link>
+        <Link href="/about">AI Dashboard</Link>
+        <Link href="/contact">Recent Payments</Link>
         <Link href="/help">Help</Link>
       </div>
 

@@ -51,9 +51,6 @@ export async function POST(req) {
       { status: 201 },
     );
   } catch (error) {
-    console.log("payment Api error", error);
-    console.log("payment Api error", error?.message);
-    console.log("payment Api error", error?.stack);
     if (error instanceof ZodError) {
       return NextResponse.json(
         {
