@@ -1,12 +1,11 @@
-import Navbar from "@/components/layout/Navbar";
+import Sidebar from "@/components/dashboard/layout/SideNavbar";
 
-export default function DashboardLayout({ children }) {
+
+export default function MainLayout({ children }) {
   return (
-    <>
-      <nav>
-        <Navbar />
-      </nav>
-      <main> {children}</main>
-    </>
+    <div className="flex min-h-screen bg-[#f6f8fa]">
+      <Sidebar/>
+      <main className="flex-1 p-8">{children}</main>
+    </div>
   );
 }
