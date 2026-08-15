@@ -2,7 +2,7 @@
 import { apiClient } from "@/lib/api.Client";
 import { useAuth } from "@/provider/AuthProvider";
 import React, { useEffect, useState } from "react";
-import CustomAvatar from "../CustomAvatar";
+import CustomAvatar from "@/components/dashboard/components/CustomAvatar";
 
 const ProfileForm = () => {
   const { user, updateLocalUser, isLoading } = useAuth();
