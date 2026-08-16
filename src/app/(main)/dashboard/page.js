@@ -6,9 +6,9 @@ import VoiceAssistanceCard from "@/components/dashboard/components/VoiceAssistan
 
 export default function () {
   return (
-    <div className=" bg-[#f6f8fa] min-h-screen py-10 px-5">
+    <div className="bg-[#f6f8fa] min-h-screen">
       <DashboardStatCard />
-      <div className="flex">
+      <div className="flex mt-5 gap-5 justify-end">
         <QuickAddCard />
         <VoiceAssistanceCard />
       </div>

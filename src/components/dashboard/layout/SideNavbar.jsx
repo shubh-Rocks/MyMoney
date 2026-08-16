@@ -1,14 +1,7 @@
 "use client";
 import { navItems } from "@/lib/navConfig";
 import { useAuth } from "@/provider/AuthProvider";
-import {
-  ChevronDown,
-  ChevronLeft,
-  ChevronRight,
-  ChevronUp,
-  Cross,
-  X,
-} from "lucide-react";
+import { ChevronDown, ChevronRight, ChevronUp, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -78,7 +71,7 @@ const Sidebar = () => {
         </div>
 
         {/* nav links */}
-        <nav className="flex flex-col gap-1 px-3 py-6">
+        <nav className="flex flex-col gap-3 px-3 py-6">
           {navItems.map((items) => {
             const Icon = items.icon;
             const active = pathname === items.href;
