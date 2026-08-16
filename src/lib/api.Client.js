@@ -88,6 +88,10 @@ class ApiClient {
     return this.request("/api/payments/recent");
   }
 
+  async paymentsMethods() {
+    return this.request("/api/payments/methods");
+  }
+
   // Dashboard methods
   async BorrowersLoanSummary() {
     return this.request("/api/dashboard");
