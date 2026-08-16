@@ -1,5 +1,12 @@
+import { Inter } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/provider/AuthProvider";
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+});
 
 export const metadata = {
   title: "lein-dein",
@@ -8,8 +15,8 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className="h-full antialiased">
-      <body className="min-h-full flex flex-col">
+    <html lang="en" className={inter.variable}>
+      <body className="min-h-full flex flex-col font-sans antialiased">
         <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
