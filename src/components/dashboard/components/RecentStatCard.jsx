@@ -3,8 +3,8 @@ import PieChartDefaultIndex from "@/components/dashboard/components/PieCharts";
 
 const RecentStatCard = () => {
   return (
-    <div className="bg-white rounded-2xl flex py-3.5 px-3">
-      <div className="flex gap-2 border-r-[1] border-gray-400">
+    <div className="bg-white w-full rounded-2xl flex py-3.5 px-3">
+      <div className="flex w-ful gap-2 border-r-[1] border-gray-400">
         <div className="">
           <PieChartDefaultIndex />
         </div>
