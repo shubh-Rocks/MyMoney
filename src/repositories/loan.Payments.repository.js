@@ -18,7 +18,7 @@ class LoanPaymentRepository {
         amount: true,
         paymentDate: true,
         paymentMethod: true,
-      
+
         loan: {
           select: {
             borrower: {
@@ -33,6 +33,18 @@ class LoanPaymentRepository {
         paymentDate: "desc",
       },
       take: 5,
+    });
+  }
+
+  paymentsMethods(userId) {
+    return prisma.loanPayment.groupBy({
+      by: ["paymentMethod"],
+      where: {
+        userId: userId,
+      },
+      _count: {
+        _all: true,
+      },
     });
   }
 }

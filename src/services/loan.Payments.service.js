@@ -81,6 +81,12 @@ class LoanPaymentService {
       await loanPaymentRepository.recentPayments(userId);
     return getAllRecentPayments;
   }
+
+  async getPaymentsMethod(userId) {
+    const getAllPaymentsMethod =
+      await loanPaymentRepository.paymentsMethods(userId);
+    return getAllPaymentsMethod;
+  }
 }
 
 export const loanPaymentService = new LoanPaymentService();
