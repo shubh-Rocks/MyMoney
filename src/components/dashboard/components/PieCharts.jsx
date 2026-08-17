@@ -25,7 +25,6 @@ export default function PaymentPieChart({ isAnimationActive = true }) {
             value: item._count._all,
           }));
 
-          // Total count nikalne ke liye
           const total = formattedData.reduce(
             (acc, curr) => acc + curr.value,
             0,
@@ -61,8 +60,9 @@ export default function PaymentPieChart({ isAnimationActive = true }) {
             nameKey="name"
             cx="50%"
             cy="50%"
-            outerRadius={60} // Chart ko chota karne ke liye radius kam kiya hai
-            innerRadius={35} // Donut style banane ke liye thickness adjust ki hai
+            outerRadius={60}
+            innerRadius={35}
+            cornerRadius={3}
             isAnimationActive={isAnimationActive}
             stroke="none"
           >
