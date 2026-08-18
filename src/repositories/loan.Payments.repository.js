@@ -20,12 +20,16 @@ class LoanPaymentRepository {
           amount: true,
           paymentDate: true,
           paymentMethod: true,
+          notes: true,
 
           loan: {
             select: {
+              status: true,
               borrower: {
                 select: {
                   name: true,
+                  phone: true,
+                 
                 },
               },
             },

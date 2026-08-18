@@ -12,9 +12,7 @@ const BorrowerDetails = () => {
   const fetchPayment = async (pageNumber) => {
     try {
       setLoading(true);
-
       const data = await apiClient.recentPayments(pageNumber);
-
       setPayments(data.recentPay.payments);
       setPagination(data.recentPay.pagination);
     } catch (error) {
@@ -29,40 +27,121 @@ const BorrowerDetails = () => {
   }, [page]);
 
   return (
-    <div className="bg-white">
-      {/* Payments */}
+    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden p-6">
+      <div className="flex flex-col gap-1 mb-6">
+        <h2 className="font-bold text-2xl text-gray-900">All Payments</h2>
+        <p className="text-sm text-gray-500 font-medium">
+          184 payments this month ·{" "}
+          <span className="text-emerald-600 font-semibold">
+            ₹9,42,600 collected
+          </span>
+        </p>
+      </div>
 
-      {loading ? (
-        <p>Loading...</p>
-      ) : (
-        payments.map((payment) => (
-          <div key={payment.id}>
-            <p>{payment.loan.borrower.name}</p>
-            <p>{payment.amount}</p>
-            <p>{payment.paymentMethod}</p>
-          </div>
-        ))
-      )}
+      <div className="overflow-x-auto w-full rounded-xl border border-gray-100">
+        <table className="w-full text-left border-collapse">
+          <thead>
+            <tr className="bg-gray-50/75 border-b border-gray-100 text-xs font-semibold uppercase tracking-wider text-gray-500">
+              <th className="py-4 px-6">Borrower</th>
+              <th className="py-4 px-6">Phone No.</th>
+              <th className="py-4 px-6">Amount</th>
+              <th className="py-4 px-6">Date</th>
+              <th className="py-4 px-6">Method</th>
+              <th className="py-4 px-6">Status</th>
+              <th className="py-4 px-6">Notes</th>
+            </tr>
+          </thead>
 
-      {/* Pagination */}
+          <tbody className="divide-y divide-gray-100 text-sm text-gray-700 bg-white">
+            {loading ? (
+              <tr>
+                <td
+                  colSpan={7}
+                  className="py-12 text-center text-gray-400 font-medium"
+                >
+                  <div className="flex items-center justify-center gap-2">
+                    <div className="w-5 h-5 border-2 border-emerald-600 border-t-transparent rounded-full animate-spin"></div>
+                    Loading payments...
+                  </div>
+                </td>
+              </tr>
+            ) : payments.length === 0 ? (
+              <tr>
+                <td
+                  colSpan={7}
+                  className="py-12 text-center text-gray-400 font-medium"
+                >
+                  No payments found.
+                </td>
+              </tr>
+            ) : (
+              payments.map((payment, index) => (
+                <tr
+                  key={payment._id || index}
+                  className="hover:bg-gray-50/50 transition-colors duration-150"
+                >
+                  <td className="py-4 px-6 font-medium text-gray-900">
+                    {payment.loan?.borrower?.name || "N/A"}
+                  </td>
+                  <td className="py-4 px-6 text-gray-500">
+                    {payment.loan?.borrower?.phone || "N/A"}
+                  </td>
+                  <td className="py-4 px-6 font-semibold text-emerald-600">
+                    ₹{payment.amount}
+                  </td>
+                  <td className="py-4 px-6 text-gray-500">
+                    {payment.paymentDate}
+                  </td>
+                  <td className="py-4 px-6">
+                    <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-700">
+                      {payment.paymentMethod}
+                    </span>
+                  </td>
+                  <td className="py-4 px-6">
+                    <span
+                      className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold ${
+                        payment.loan?.status?.toLowerCase() === "active"
+                          ? "bg-emerald-50 text-emerald-700"
+                          : "bg-amber-50 text-amber-700"
+                      }`}
+                    >
+                      {payment.loan?.status || "N/A"}
+                    </span>
+                  </td>
+                  <td className="py-4 px-6 text-gray-500 truncate max-w-xs">
+                    {payment.notes || "-"}
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
 
-      <div className="flex mt-3 gap-3">
+      <div className="flex items-center justify-between mt-6 pt-4 border-t border-gray-100">
         <button
           onClick={() => setPage((prev) => prev - 1)}
           disabled={!pagination?.hasPreviousPage || loading}
-          className="p-2 font-semibold bg-emerald-600 rounded-[5px] text-white text-sm"
+          className="px-4 py-2 font-medium bg-white border border-gray-200 rounded-lg text-gray-700 text-sm hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-sm cursor-pointer"
         >
-          Prev
+          Previous
         </button>
 
-        <span>
-          Page {pagination?.currentPage} of {pagination?.totalPages}
+        <span className="text-sm text-gray-500 font-medium">
+          Page{" "}
+          <span className="text-gray-900 font-semibold">
+            {pagination?.currentPage || 1}
+          </span>{" "}
+          of{" "}
+          <span className="text-gray-900 font-semibold">
+            {pagination?.totalPages || 1}
+          </span>
         </span>
 
         <button
           onClick={() => setPage((prev) => prev + 1)}
           disabled={!pagination?.hasNextPage || loading}
-          className="p-2 font-semibold bg-emerald-600 rounded-[5px] text-white text-sm"
+          className="px-4 py-2 font-medium bg-emerald-600 rounded-lg text-white text-sm hover:bg-emerald-700 disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-sm cursor-pointer"
         >
           Next
         </button>
