@@ -76,10 +76,26 @@ class LoanPaymentService {
     });
   }
 
-  async recentPayments(userId) {
-    const getAllRecentPayments =
-      await loanPaymentRepository.recentPayments(userId);
-    return getAllRecentPayments;
+  async recentPayments(userId, page, limit) {
+    const getAllRecentPayments = await loanPaymentRepository.recentPayments(
+      userId,
+      page,
+      limit,
+    );
+
+    const totalPages = Math.ceil(getAllRecentPayments.totalPayments / limit);
+
+    return {
+      payments: getAllRecentPayments.payments,
+      pagination: {
+        currentPage: page,
+        limit,
+        totalPayments: getAllRecentPayments.totalPayments,
+        totalPages,
+        hasNextPage: page < totalPages,
+        hasPreviousPage: page > 1,
+      },
+    };
   }
 
   async getPaymentsMethod(userId) {

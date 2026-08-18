@@ -3,9 +3,9 @@ import { verifyToken } from "@/lib/auth";
 import { authService } from "@/services/auth.service";
 import { loanPaymentService } from "@/services/loan.Payments.service";
 import { cookies } from "next/headers";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
-export async function GET() {
+export async function GET(req) {
   try {
     const cookiesStore = await cookies();
     const token = cookiesStore.get("token")?.value;
@@ -22,7 +22,15 @@ export async function GET() {
     const userId = decodePayload.id;
     const currentUser = await authService.getCurrentUser(userId);
 
-    const recentPay = await loanPaymentService.recentPayments(currentUser.id);
+    const { searchParams } = new URL(req.url);
+    const page = Number(searchParams.get("page")) || 1;
+    const limit = 5;
+
+    const recentPay = await loanPaymentService.recentPayments(
+      currentUser.id,
+      page,
+      limit,
+    );
 
     return NextResponse.json(
       {

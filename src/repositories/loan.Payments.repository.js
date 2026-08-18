@@ -7,33 +7,52 @@ class LoanPaymentRepository {
     });
   }
 
-  recentPayments(userId) {
-    return prisma.loanPayment.findMany({
-      where: {
-        userId: userId,
-      },
+  async recentPayments(userId, page = 1, limit = 5) {
+    const skip = (page - 1) * limit;
+    const [payments, totalPayments] = await prisma.$transaction([
+      prisma.loanPayment.findMany({
+        where: {
+          userId: userId,
+        },
 
-      select: {
-        id: true,
-        amount: true,
-        paymentDate: true,
-        paymentMethod: true,
+        select: {
+          id: true,
+          amount: true,
+          paymentDate: true,
+          paymentMethod: true,
 
-        loan: {
-          select: {
-            borrower: {
-              select: {
-                name: true,
+          loan: {
+            select: {
+              borrower: {
+                select: {
+                  name: true,
+                },
               },
             },
           },
         },
-      },
-      orderBy: {
-        paymentDate: "desc",
-      },
-      take: 5,
-    });
+        orderBy: [
+          {
+            paymentDate: "desc",
+          },
+          {
+            id: "desc",
+          },
+        ],
+        skip: skip,
+        take: limit,
+      }),
+      prisma.loanPayment.count({
+        where: {
+          userId: userId,
+        },
+      }),
+    ]);
+
+    return {
+      payments,
+      totalPayments,
+    };
   }
 
   paymentsMethods(userId) {
