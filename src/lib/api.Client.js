@@ -84,8 +84,8 @@ class ApiClient {
     });
   }
 
-  async recentPayments() {
-    return this.request("/api/payments/recent");
+  async recentPayments(page = 1) {
+    return this.request(`/api/payments/recent?page=${page}`);
   }
 
   async paymentsMethods() {
