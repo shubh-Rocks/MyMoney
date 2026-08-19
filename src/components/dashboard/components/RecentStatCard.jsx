@@ -33,12 +33,12 @@ const RecentStatCard = () => {
   return (
     <div className="bg-white w-full rounded-2xl flex flex-col lg:flex-row items-center justify-between py-5 px-6 shadow-sm border border-gray-100 gap-6">
       {/* Left Section: Chart & Header */}
-      <div className="flex items-center gap-5 w-full lg:w-auto lg:border-r border-gray-100 lg:pr-8">
-        <div className="shrink-0">
+      <div className="flex items-center gap-3 w-full lg:w-auto lg:border-r-2 border-gray-200">
+        <div className="">
           <PieChartDefaultIndex />
         </div>
-        <div className="flex flex-col">
-          <h4 className="text-xl font-bold text-gray-900 tracking-tight">
+        <div className="flex flex-col w-80">
+          <h4 className="text-xl font-bold text-gray-900 ">
             Payment Method Breakdown
           </h4>
           <p className="text-gray-500 text-sm mt-0.5 font-medium">
@@ -48,9 +48,9 @@ const RecentStatCard = () => {
       </div>
 
       {/* Right Section: Stats Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 w-full lg:w-auto">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 w-full">
         {/* UPI */}
-        <div className="flex items-center gap-3.5 bg-gray-50/60 p-3.5 rounded-xl border border-gray-100 hover:bg-gray-50 transition-colors">
+        <div className="flex items-center gap-3.5 bg-gray-50/60 p-3 rounded-xl border border-gray-100 hover:bg-gray-50 transition-colors">
           <div className="bg-[#b89ee1]/20 p-2.5 rounded-lg shrink-0">
             <Shield className="text-purple-700 w-5 h-5" />
           </div>

@@ -122,24 +122,24 @@ class LoanPaymentService {
       UPI: {
         amount: payments.UPI.amount,
         count: payments.UPI.count,
-        percentages: total > 0 ? Math.round((payments.UPI / total) * 100) : 0,
+        percentages: total > 0 ? Math.round((payments.UPI.amount / total) * 100) : 0,
       },
       CASH: {
         amount: payments.CASH.amount,
         count: payments.CASH.count,
-        percentages: total > 0 ? Math.round((payments.CASH / total) * 100) : 0,
+        percentages: total > 0 ? Math.round((payments.CASH.amount / total) * 100) : 0,
       },
       BANK_TRANSFER: {
         amount: payments.BANK_TRANSFER.amount,
         count: payments.BANK_TRANSFER.count,
         percentages:
-          total > 0 ? Math.round((payments.BANK_TRANSFER / total) * 100) : 0,
+          total > 0 ? Math.round((payments.BANK_TRANSFER.amount / total) * 100) : 0,
       },
       CHEQUE: {
         amount: payments.CHEQUE.amount,
         count: payments.CHEQUE.count,
         percentages:
-          total > 0 ? Math.round((payments.CHEQUE / total) * 100) : 0,
+          total > 0 ? Math.round((payments.CHEQUE.amount / total) * 100) : 0,
       },
       total,
     };
