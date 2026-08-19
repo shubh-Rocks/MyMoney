@@ -31,7 +31,7 @@ const RecentStatCard = () => {
   }
 
   return (
-    <div className="bg-white w-full rounded-2xl flex flex-col lg:flex-row items-center justify-between py-5 px-6 shadow-sm border border-gray-100 gap-6">
+    <div className="bg-white w-full rounded-2xl flex flex-col lg:flex-row items-center justify-between py-5 px-3 shadow-sm border border-gray-100 gap-6">
       {/* Left Section: Chart & Header */}
       <div className="flex items-center gap-3 w-full lg:w-auto lg:border-r-2 border-gray-200">
         <div className="">
@@ -50,7 +50,7 @@ const RecentStatCard = () => {
       {/* Right Section: Stats Grid */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 w-full">
         {/* UPI */}
-        <div className="flex items-center gap-3.5 bg-gray-50/60 p-3 rounded-xl border border-gray-100 hover:bg-gray-50 transition-colors">
+        <div className="flex items-center gap-3.5 bg-gray-50 p-3 rounded-xl border border-gray-100 hover:bg-gray-50 transition-colors">
           <div className="bg-[#b89ee1]/20 p-2.5 rounded-lg shrink-0">
             <Shield className="text-purple-700 w-5 h-5" />
           </div>
@@ -68,7 +68,7 @@ const RecentStatCard = () => {
         </div>
 
         {/* CASH */}
-        <div className="flex items-center gap-3.5 bg-gray-50/60 p-3.5 rounded-xl border border-gray-100 hover:bg-gray-50 transition-colors">
+        <div className="flex items-center gap-3.5 bg-gray-50 p-3.5 rounded-xl border border-gray-100 hover:bg-gray-50 transition-colors">
           <div className="bg-[#f1bf68]/20 p-2.5 rounded-lg shrink-0">
             <Banknote className="text-yellow-600 w-5 h-5" />
           </div>
@@ -86,7 +86,7 @@ const RecentStatCard = () => {
         </div>
 
         {/* BANK TRANSFER */}
-        <div className="flex items-center gap-3.5 bg-gray-50/60 p-3.5 rounded-xl border border-gray-100 hover:bg-gray-50 transition-colors">
+        <div className="flex items-center gap-3.5 bg-gray-50 p-3.5 rounded-xl border border-gray-100 hover:bg-gray-50 transition-colors">
           <div className="bg-[#6ad9b4]/20 p-2.5 rounded-lg shrink-0">
             <Landmark className="text-[#296551] w-5 h-5" />
           </div>
@@ -104,7 +104,7 @@ const RecentStatCard = () => {
         </div>
 
         {/* CHEQUE */}
-        <div className="flex items-center gap-3.5 bg-gray-50/60 p-3.5 rounded-xl border border-gray-100 hover:bg-gray-50 transition-colors">
+        <div className="flex items-center gap-3.5 bg-gray-50 p-3.5 rounded-xl border border-gray-100 hover:bg-gray-50 transition-colors">
           <div className="bg-[#f17a7a]/20 p-2.5 rounded-lg shrink-0">
             <CreditCard className="text-rose-700 w-5 h-5" />
           </div>
