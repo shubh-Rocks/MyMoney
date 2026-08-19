@@ -25,7 +25,7 @@ export async function GET() {
 
     return NextResponse.json(
       {
-        message: "success", // <-- Change: 'success' ko string banaya
+        message: "success", 
         methods,
       },
       { status: 200 },

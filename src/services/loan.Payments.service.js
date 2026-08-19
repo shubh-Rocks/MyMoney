@@ -101,7 +101,48 @@ class LoanPaymentService {
   async getPaymentsMethod(userId) {
     const getAllPaymentsMethod =
       await loanPaymentRepository.paymentsMethods(userId);
-    return getAllPaymentsMethod;
+
+    const payments = {
+      UPI: { amount: 0, count: 0 },
+      CASH: { amount: 0, count: 0 },
+      BANK_TRANSFER: { amount: 0, count: 0 },
+      CHEQUE: { amount: 0, count: 0 },
+    };
+    getAllPaymentsMethod.forEach((items) => {
+      payments[items.paymentMethod] = {
+        amount: Number(items._sum.amount ?? 0),
+        count: items._count._all,
+      };
+    });
+    const total = Object.values(payments).reduce(
+      (sum, payment) => sum + payment.amount,
+      0,
+    );
+    return {
+      UPI: {
+        amount: payments.UPI.amount,
+        count: payments.UPI.count,
+        percentages: total > 0 ? Math.round((payments.UPI / total) * 100) : 0,
+      },
+      CASH: {
+        amount: payments.CASH.amount,
+        count: payments.CASH.count,
+        percentages: total > 0 ? Math.round((payments.CASH / total) * 100) : 0,
+      },
+      BANK_TRANSFER: {
+        amount: payments.BANK_TRANSFER.amount,
+        count: payments.BANK_TRANSFER.count,
+        percentages:
+          total > 0 ? Math.round((payments.BANK_TRANSFER / total) * 100) : 0,
+      },
+      CHEQUE: {
+        amount: payments.CHEQUE.amount,
+        count: payments.CHEQUE.count,
+        percentages:
+          total > 0 ? Math.round((payments.CHEQUE / total) * 100) : 0,
+      },
+      total,
+    };
   }
 }
 

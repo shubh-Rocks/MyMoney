@@ -29,7 +29,6 @@ class LoanPaymentRepository {
                 select: {
                   name: true,
                   phone: true,
-                 
                 },
               },
             },
@@ -64,6 +63,9 @@ class LoanPaymentRepository {
       by: ["paymentMethod"],
       where: {
         userId: userId,
+      },
+      _sum: {
+        amount: true,
       },
       _count: {
         _all: true,

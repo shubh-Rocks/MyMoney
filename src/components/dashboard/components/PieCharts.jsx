@@ -3,7 +3,7 @@ import { apiClient } from "@/lib/api.Client";
 import { useEffect, useState } from "react";
 import { Pie, PieChart, Tooltip, ResponsiveContainer, Cell } from "recharts";
 
-const COLORS = ["#F59E0B", "#6D28D9", "#3B82F6", "#EF4444", "#10B981"];
+const COLORS = ["#6D28D9","#F59E0B", "#10B981", "#EF4444"];
 
 export default function PaymentPieChart({ isAnimationActive = true }) {
   const [chartData, setChartData] = useState([]);
@@ -15,23 +15,29 @@ export default function PaymentPieChart({ isAnimationActive = true }) {
       try {
         const result = await apiClient.paymentsMethods();
 
-        if (
-          result &&
-          result.message === "success" &&
-          Array.isArray(result.methods)
-        ) {
-          const formattedData = result.methods.map((item) => ({
-            name: item.paymentMethod,
-            value: item._count._all,
-          }));
+        const formattedData = [
+          {
+            name: "UPI",
+            value: result.methods.UPI.count,
+          },
+          {
+            name: "CASH",
+            value: result.methods.CASH.count,
+          },
+          {
+            name: "BANK_TRANSFER",
+            value: result.methods.BANK_TRANSFER.count,
+          },
+          {
+            name: "CHEQUE",
+            value: result.methods.CHEQUE.count,
+          },
+        ];
 
-          const total = formattedData.reduce(
-            (acc, curr) => acc + curr.value,
-            0,
-          );
-          setTotalPayments(total);
-          setChartData(formattedData);
-        }
+        const total = formattedData.reduce((acc, curr) => acc + curr.value, 0);
+
+        setTotalPayments(total);
+        setChartData(formattedData);
       } catch (error) {
         console.error("Error fetching chart data:", error);
       } finally {
