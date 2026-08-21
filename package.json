@@ -23,6 +23,7 @@
     "react-hook-form": "^7.81.0",
     "recharts": "^3.10.1",
     "resend": "^6.16.0",
+    "retell-sdk": "^5.63.0",
     "zod": "^4.4.3"
   },
   "devDependencies": {
