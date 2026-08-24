@@ -66,9 +66,8 @@ model User {
   loanPayments LoanPayment[]
   auditLogs    AuditLog[]
 
-  createdAt  DateTime     @default(now())
-  updatedAt  DateTime     @updatedAt
-  aicallLogs AICallLogs[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("users")
 }
@@ -111,9 +110,8 @@ model Borrower {
   user  User   @relation(fields: [userId], references: [id], onDelete: Restrict)
   loans Loan[]
 
-  createdAt  DateTime     @default(now())
-  updatedAt  DateTime     @updatedAt
-  aicallLogs AICallLogs[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@unique([userId, email])
   @@unique([userId, phone])
@@ -148,9 +146,8 @@ model Loan {
 
   payments LoanPayment[]
 
-  createdAt  DateTime     @default(now())
-  updatedAt  DateTime     @updatedAt
-  aicallLogs AICallLogs[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([userId, status])
   @@index([userId, isDeleted])
@@ -182,29 +179,6 @@ model LoanPayment {
   @@index([loanId, paymentDate])
   @@index([userId, paymentDate])
   @@map("loan_payments")
-}
-
-model AICallLogs {
-  id         Int @id @default(autoincrement())
-  userId     Int
-  loanId     Int
-  borrowerId Int
-
-  callStatus    String
-  duration      Int?
-  transcript    String?   @db.Text
-  summary       String?   @db.Text
-  promiseAmount Decimal?  @db.Decimal(15, 2)
-  promisedDate  DateTime?
-
-  isSimulated Boolean  @default(true)
-  createdAt   DateTime @default(now())
-
-  user     User     @relation(fields: [userId], references: [id])
-  loan     Loan     @relation(fields: [loanId], references: [id])
-  borrower Borrower @relation(fields: [borrowerId], references: [id])
-
-  @@map("ai_call_logs")
 }
 
 model AuditLog {
