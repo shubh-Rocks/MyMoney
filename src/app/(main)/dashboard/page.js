@@ -5,6 +5,7 @@ import QuickAddCard from "@/components/dashboard/components/QuickAddCard";
 import VoiceAssistanceCard from "@/components/dashboard/components/VoiceAssistanceCard";
 import { useAuth } from "@/provider/AuthProvider";
 import { useEffect, useState } from "react";
+import SearchBox from "@/components/dashboard/components/SearchBox";
 
 export default function () {
   const { user: rawUser } = useAuth();
@@ -37,7 +38,8 @@ export default function () {
         </p>
       </div>
       <DashboardStatCard />
-      <div className="flex mt-5 gap-5 justify-end">
+      <div className="flex mt-5 gap-5 justify-evenly">
+        <SearchBox />
         <QuickAddCard />
         <VoiceAssistanceCard />
       </div>
