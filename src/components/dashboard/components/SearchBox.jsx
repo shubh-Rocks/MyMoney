@@ -11,8 +11,7 @@ const SearchBox = () => {
         <input
           type="text"
           placeholder="Search borrower name or phone"
-          className="w-xl h-15 text-lg text-black bg-gray-50 rounded-2xl border-2 border-emerald-500 shadow-[0_4px_20px_rgba(16,185,129,0.15)] 
-            focus:shadow-[0_4px_25px_rgba(16,185,129,0.3)] placeholder-gray-500 pl-14 outline-none"
+          className="w-xl h-15 text-lg text-black bg-gray-50 rounded-2xl border-2 border-emerald-500 shadow-[0_4px_20px_rgba(16,185,129,0.15)] focus:shadow-[0_4px_25px_rgba(16,185,129,0.3)] placeholder-gray-500 pl-14 outline-none"
         />
       </div>
     </div>
