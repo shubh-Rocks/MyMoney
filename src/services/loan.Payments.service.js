@@ -19,8 +19,8 @@ class LoanPaymentService {
     }
     if (loan.userId !== userId) {
       throw new AppError(
-        "you don't have accses to this loan",
-        404,
+        "you don't have access to this loan",
+        403,
         "FORBIDDEN",
       );
     }
@@ -122,18 +122,22 @@ class LoanPaymentService {
       UPI: {
         amount: payments.UPI.amount,
         count: payments.UPI.count,
-        percentages: total > 0 ? Math.round((payments.UPI.amount / total) * 100) : 0,
+        percentages:
+          total > 0 ? Math.round((payments.UPI.amount / total) * 100) : 0,
       },
       CASH: {
         amount: payments.CASH.amount,
         count: payments.CASH.count,
-        percentages: total > 0 ? Math.round((payments.CASH.amount / total) * 100) : 0,
+        percentages:
+          total > 0 ? Math.round((payments.CASH.amount / total) * 100) : 0,
       },
       BANK_TRANSFER: {
         amount: payments.BANK_TRANSFER.amount,
         count: payments.BANK_TRANSFER.count,
         percentages:
-          total > 0 ? Math.round((payments.BANK_TRANSFER.amount / total) * 100) : 0,
+          total > 0
+            ? Math.round((payments.BANK_TRANSFER.amount / total) * 100)
+            : 0,
       },
       CHEQUE: {
         amount: payments.CHEQUE.amount,
@@ -143,6 +147,44 @@ class LoanPaymentService {
       },
       total,
     };
+  }
+
+  async settleLoan(loanId, userId, paymentMethod) {
+    const loan = await loanRepository.findByLoanId(loanId);
+
+    if (!loan) {
+      throw new AppError("Loan not found", 404, "LOAN_NOT_FOUND");
+    }
+
+    if (loan.userId !== userId) {
+      throw new AppError(
+        "You don't have access to this loan",
+        403,
+        "FORBIDDEN",
+      );
+    }
+
+    if (loan.status === "PAID") {
+      throw new AppError("loan already fully paid", 400, "LOAN_ALREADY_PAID");
+    }
+
+    if (loan.remainingAmount <= 0) {
+      throw new AppError(
+        "loan has no remaining amount",
+        400,
+        "NO_REMAINING_AMOUNT",
+      );
+    }
+
+    const settlementAmount = loan.remainingAmount;
+
+    return loanRepository.settleLoan(
+      loanId,
+      userId,
+      paymentMethod,
+      loan,
+      settlementAmount,
+    );
   }
 }
 

@@ -56,7 +56,6 @@ class ApiClient {
   }
 
   // Profile update method
-
   async updateProfile(profileData) {
     return this.request("/api/user/profile", {
       method: "PATCH",
@@ -95,6 +94,15 @@ class ApiClient {
   // Dashboard methods
   async BorrowersLoanSummary() {
     return this.request("/api/dashboard");
+  }
+
+  async loanSettlement(loanId, paymentMethod) {
+    return this.request(`/api/loans/${loanId}/settle`, {
+      method: "PATCH",
+      body: JSON.stringify({
+        paymentMethod,
+      }),
+    });
   }
 }
 
