@@ -6,6 +6,7 @@ import VoiceAssistanceCard from "@/components/dashboard/components/VoiceAssistan
 import { useAuth } from "@/provider/AuthProvider";
 import { useEffect, useState } from "react";
 import SearchBox from "@/components/dashboard/components/SearchBox";
+import KanbanBoard from "@/components/dashboard/components/KanbanBoard";
 
 export default function () {
   const { user: rawUser } = useAuth();
@@ -44,6 +45,7 @@ export default function () {
         <VoiceAssistanceCard />
       </div>
       <FormModal />
+      <KanbanBoard />
     </div>
   );
 }
