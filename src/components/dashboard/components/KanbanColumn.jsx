@@ -8,23 +8,18 @@ export default function KanbanColumn({
   onDragOver,
   onDrop,
 }) {
-  const columnLoans = Array.isArray(loans)
-    ? loans.filter((loan) => {
-        if (column.key === "pending") {
-          return loan.status === "ACTIVE" || loan.status === "PARTIALLY_PAID";
-        }
-
-        if (column.key === "overdue") {
-          return loan.status === "OVERDUE";
-        }
-
-        if (column.key === "paid") {
-          return loan.status === "PAID";
-        }
-
-        return false;
-      })
-    : [];
+  const columnLoans = loans.filter((loan) => {
+    if (column.key === "pending") {
+      return loan.status === "ACTIVE" || loan.status === "PARTIALLY_PAID";
+    }
+    if (column.key === "overdue") {
+      return loan.status === "OVERDUE";
+    }
+    if (column.key === "paid") {
+      return loan.status === "PAID";
+    }
+    return false;
+  });
   return (
     <div
       onDragOver={onDragOver}

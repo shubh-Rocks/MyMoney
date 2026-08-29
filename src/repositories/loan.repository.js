@@ -23,7 +23,6 @@ class LoanRepository {
   }
 
   async settleLoan(loanId, userId, paymentMethod, loan, settlementAmount) {
-    console.log("🔥 REPOSITORY SETTLEMENT AMOUNT:", settlementAmount);
     return prisma.$transaction(async (tx) => {
       const payment = await tx.loanPayment.create({
         data: {

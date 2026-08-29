@@ -11,8 +11,6 @@ export default function KanbanBoard() {
       try {
         const response = await apiClient.getBorrower();
 
-        console.log("🔥 BORROWER RESPONSE:", response);
-
         const borrowers = response.borrowers;
 
         const formattedLoans = borrowers.flatMap((borrower) =>
@@ -22,8 +20,6 @@ export default function KanbanBoard() {
             borrowerName: borrower.name,
           })),
         );
-
-        console.log("🔥 KANBAN LOANS:", formattedLoans);
 
         setLoans(formattedLoans);
       } catch (error) {
@@ -37,9 +33,8 @@ export default function KanbanBoard() {
   }, []);
 
   const handleDragStart = (e, id) => {
-    console.log("🔥 BOARD DRAG START ID:", id);
     if (!id) {
-      console.error("❌ Error: Trying to drag a card with undefined ID!");
+      console.error(" Error: Trying to drag a card with undefined ID!");
       return;
     }
     e.dataTransfer.effectAllowed = "move";
@@ -58,21 +53,18 @@ export default function KanbanBoard() {
     const rawId = e.dataTransfer.getData("text/plain");
     const loanId = Number(rawId);
 
-    console.log("🔥 DROPPED RAW ID:", rawId, "CONVERTED:", loanId);
-
     if (!loanId || isNaN(loanId)) {
-      console.error("❌ Invalid Loan ID detected during drop:", rawId);
+      console.error("Invalid Loan ID detected during drop:", rawId);
       alert("Error: Could not identify the dragged loan.");
       return;
     }
 
     const draggedLoan = loans.find((l) => l.id === loanId);
     if (!draggedLoan) {
-      console.error("❌ Loan not found in state array for ID:", loanId);
+      console.error("Loan not found in state array for ID:", loanId);
       return;
     }
 
-    // --- RULES ---
     if (draggedLoan.status === "PAID") {
       alert("Settled loans cannot be moved!");
       return;
@@ -94,7 +86,6 @@ export default function KanbanBoard() {
 
     if (newBackendStatus === draggedLoan.status) return;
 
-    // Optimistic UI Update
     setLoans((prevLoans) =>
       prevLoans.map((loan) =>
         loan.id === loanId ? { ...loan, status: newBackendStatus } : loan,
@@ -105,8 +96,6 @@ export default function KanbanBoard() {
       if (targetColumnKey === "paid") {
         const response = await apiClient.loanSettlement(loanId, "CASH");
       }
-     
-      console.log("🔥 Status successfully updated in database!");
     } catch (error) {
       console.error("Error updating loan status:", error);
       alert("Failed to update status. Reverting changes...");
