@@ -3,26 +3,28 @@ import LoanCard from "./LoanCard";
 
 export default function KanbanColumn({
   column,
-  loans,
+  loans = [],
   onDragStart,
   onDragOver,
   onDrop,
 }) {
-  const columnLoans = loans.filter((loan) => {
-    if (column.key === "pending") {
-      return loan.status === "ACTIVE" || loan.status === "PARTIALLY_PAID";
-    }
+  const columnLoans = Array.isArray(loans)
+    ? loans.filter((loan) => {
+        if (column.key === "pending") {
+          return loan.status === "ACTIVE" || loan.status === "PARTIALLY_PAID";
+        }
 
-    if (column.key === "overdue") {
-      return loan.status === "OVERDUE";
-    }
+        if (column.key === "overdue") {
+          return loan.status === "OVERDUE";
+        }
 
-    if (column.key === "paid") {
-      return loan.status === "PAID";
-    }
+        if (column.key === "paid") {
+          return loan.status === "PAID";
+        }
 
-    return false;
-  });
+        return false;
+      })
+    : [];
   return (
     <div
       onDragOver={onDragOver}

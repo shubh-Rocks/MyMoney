@@ -36,28 +36,81 @@ export default function KanbanBoard() {
     fetchLoans();
   }, []);
 
-  // 1. Drag Start: Card ki ID dataTransfer me store karna
   const handleDragStart = (e, id) => {
-    console.log("🔥 BOARD DRAG START:", id);
-
+    console.log("🔥 BOARD DRAG START ID:", id);
+    if (!id) {
+      console.error("❌ Error: Trying to drag a card with undefined ID!");
+      return;
+    }
     e.dataTransfer.effectAllowed = "move";
-
     e.dataTransfer.setData("text/plain", String(id));
   };
 
-  // 2. Drag Over: Drop allow karne ke liye default behavior rokna
+  // 2. Drag Over
   const handleDragOver = (e) => {
     e.preventDefault();
   };
 
-  // 3. Drop: Target column ke status ke hisab se loan ki state update karna
-  const handleDrop = (e, targetStatus) => {
+  // 3. Drop: Safe ID extraction and API call
+  const handleDrop = async (e, targetColumnKey) => {
     e.preventDefault();
 
-    const loanId = Number(e.dataTransfer.getData("text/plain"));
+    const rawId = e.dataTransfer.getData("text/plain");
+    const loanId = Number(rawId);
 
-    console.log("🔥 DROPPED LOAN ID:", loanId);
-    console.log("🔥 TARGET STATUS:", targetStatus);
+    console.log("🔥 DROPPED RAW ID:", rawId, "CONVERTED:", loanId);
+
+    if (!loanId || isNaN(loanId)) {
+      console.error("❌ Invalid Loan ID detected during drop:", rawId);
+      alert("Error: Could not identify the dragged loan.");
+      return;
+    }
+
+    const draggedLoan = loans.find((l) => l.id === loanId);
+    if (!draggedLoan) {
+      console.error("❌ Loan not found in state array for ID:", loanId);
+      return;
+    }
+
+    // --- RULES ---
+    if (draggedLoan.status === "PAID") {
+      alert("Settled loans cannot be moved!");
+      return;
+    }
+
+    if (draggedLoan.status === "OVERDUE" && targetColumnKey === "pending") {
+      alert("Overdue loans can only be marked as Paid, not back to Pending!");
+      return;
+    }
+
+    let newBackendStatus = draggedLoan.status;
+    if (targetColumnKey === "paid") {
+      newBackendStatus = "PAID";
+    } else if (targetColumnKey === "pending") {
+      newBackendStatus = "ACTIVE";
+    } else if (targetColumnKey === "overdue") {
+      newBackendStatus = "OVERDUE";
+    }
+
+    if (newBackendStatus === draggedLoan.status) return;
+
+    // Optimistic UI Update
+    setLoans((prevLoans) =>
+      prevLoans.map((loan) =>
+        loan.id === loanId ? { ...loan, status: newBackendStatus } : loan,
+      ),
+    );
+
+    try {
+      if (targetColumnKey === "paid") {
+        const response = await apiClient.loanSettlement(loanId, "CASH");
+      }
+     
+      console.log("🔥 Status successfully updated in database!");
+    } catch (error) {
+      console.error("Error updating loan status:", error);
+      alert("Failed to update status. Reverting changes...");
+    }
   };
 
   // Column ki list aur styling configuration
