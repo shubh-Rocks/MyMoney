@@ -11,6 +11,7 @@ import KanbanBoard from "@/components/dashboard/components/KanbanBoard";
 export default function () {
   const { user: rawUser } = useAuth();
   const user = rawUser?.data.user || rawUser?.user || rawUser;
+  const userName = user?.profile?.fullName || user?.name || "User";
   const [greetings, setGreetings] = useState("");
   const [currentDate, setCurrentDate] = useState("");
   useEffect(() => {
@@ -32,7 +33,7 @@ export default function () {
     <div className="bg-[#f6f8fa] min-h-screen">
       <div className="my-3.5">
         <h2 className=" font-bold font-stretch-100% text-3xl text-black ">
-          {greetings} , {user?.profile?.fullName || user?.name || "User"}
+          {greetings} ,{userName}
         </h2>
         <p className="text-gray-500 text-base font-serif">
           Here's what's happening with your udhaar today—{currentDate}

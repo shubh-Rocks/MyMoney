@@ -38,7 +38,11 @@ export default function KanbanBoard() {
 
   // 1. Drag Start: Card ki ID dataTransfer me store karna
   const handleDragStart = (e, id) => {
-    e.dataTransfer.setData("text/plain", id);
+    console.log("🔥 BOARD DRAG START:", id);
+
+    e.dataTransfer.effectAllowed = "move";
+
+    e.dataTransfer.setData("text/plain", String(id));
   };
 
   // 2. Drag Over: Drop allow karne ke liye default behavior rokna
@@ -49,13 +53,11 @@ export default function KanbanBoard() {
   // 3. Drop: Target column ke status ke hisab se loan ki state update karna
   const handleDrop = (e, targetStatus) => {
     e.preventDefault();
-    const loanId = e.dataTransfer.getData("text/plain");
 
-    setLoans((prevLoans) =>
-      prevLoans.map((loan) =>
-        loan.id === loanId ? { ...loan, status: targetStatus } : loan,
-      ),
-    );
+    const loanId = Number(e.dataTransfer.getData("text/plain"));
+
+    console.log("🔥 DROPPED LOAN ID:", loanId);
+    console.log("🔥 TARGET STATUS:", targetStatus);
   };
 
   // Column ki list aur styling configuration
