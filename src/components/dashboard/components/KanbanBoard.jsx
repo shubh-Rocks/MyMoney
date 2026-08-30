@@ -2,9 +2,20 @@ import React, { useEffect, useState } from "react";
 import KanbanColumn from "./KanbanColumn";
 import { apiClient } from "@/lib/api.Client";
 
-export default function KanbanBoard() {
+export default function KanbanBoard({ searchTerm = "" }) {
   const [loans, setLoans] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const search = searchTerm.trim().toLowerCase();
+  const filteredBorrower = loans.filter((loan) => {
+    if (search === "") {
+      return true;
+    }
+
+    const borrowerName = loan.borrowerName?.toLowerCase() || "";
+
+    return borrowerName.startsWith(search);
+  });
 
   useEffect(() => {
     async function fetchLoans() {
@@ -136,7 +147,7 @@ export default function KanbanBoard() {
           <KanbanColumn
             key={col.key}
             column={col}
-            loans={loans}
+            loans={filteredBorrower}
             onDragStart={handleDragStart}
             onDragOver={handleDragOver}
             onDrop={handleDrop}

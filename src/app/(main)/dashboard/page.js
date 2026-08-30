@@ -14,6 +14,9 @@ export default function () {
   const userName = user?.profile?.fullName || user?.name || "User";
   const [greetings, setGreetings] = useState("");
   const [currentDate, setCurrentDate] = useState("");
+
+  const [searchTerm, setSearchTerm] = useState("");
+
   useEffect(() => {
     const now = new Date();
     const hours = now.getHours();
@@ -41,12 +44,12 @@ export default function () {
       </div>
       <DashboardStatCard />
       <div className="flex mt-5 gap-5 justify-evenly">
-        <SearchBox />
+        <SearchBox searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
         <QuickAddCard />
         <VoiceAssistanceCard />
       </div>
       <FormModal />
-      <KanbanBoard />
+      <KanbanBoard searchTerm={searchTerm} />
     </div>
   );
 }

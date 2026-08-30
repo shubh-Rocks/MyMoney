@@ -20,6 +20,7 @@ export default function KanbanColumn({
     }
     return false;
   });
+
   return (
     <div
       onDragOver={onDragOver}
