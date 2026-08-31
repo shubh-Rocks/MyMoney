@@ -82,7 +82,11 @@ const Sidebar = () => {
                 title={collapsed ? items.label : undefined}
                 className={`group relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-colors ${active ? "bg-green-50 text-green-700" : "text-gray hover:bg-gray-100"}${collapsed ? "justify-center" : ""}`}
               >
-                <Icon size={18} className="shrink-0" />
+                <Icon
+                  size={18}
+                  strokeWidth={items.strokeWidth || 1.75}
+                  className="shrink-0"
+                />
                 {!collapsed && (
                   <span className="whitespace-nowrap">{items.label}</span>
                 )}
