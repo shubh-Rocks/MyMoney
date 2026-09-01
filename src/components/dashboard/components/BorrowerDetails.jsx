@@ -1,5 +1,6 @@
 "use client";
 
+import ExcelExportButton from "@/components/ui/ExcelExportButton";
 import { apiClient } from "@/lib/api.Client";
 import React, { useEffect, useState } from "react";
 
@@ -99,6 +100,7 @@ const BorrowerDetails = () => {
             <option value="ACTIVE">Active</option>
           </select>
         </div>
+        <ExcelExportButton />
       </div>
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden p-6">
         <div className="flex flex-col gap-1 mb-6">

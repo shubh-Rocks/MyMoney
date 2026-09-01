@@ -104,6 +104,15 @@ class ApiClient {
       }),
     });
   }
+
+  // Export Excel method
+
+  async exportExcel(excelData) {
+    return this.request("/api/excel", {
+      method: "POST",
+      body: JSON.stringify(excelData),
+    });
+  }
 }
 
 export const apiClient = new ApiClient();
