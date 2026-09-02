@@ -7,11 +7,14 @@ class ApiClient {
 
   async request(endpoint, options = {}) {
     const url = `${this.baseUrl}${endpoint}`;
+
+    const isFormData = options.body instanceof FormData;
     const config = {
       credentials: "include",
       ...options,
       headers: {
-        "Content-Type": "application/json",
+        ...(isFormData ? {} : { "Content-Type": "application/json" }),
+        ...(options.headers || {}),
       },
     };
 
@@ -111,6 +114,14 @@ class ApiClient {
     return this.request("/api/excel", {
       method: "POST",
       body: JSON.stringify(excelData),
+    });
+  }
+
+  // AI related methods
+  async aiVoice(formData) {
+    return this.request("/api/ai/voice", {
+      method: "POST",
+      body: formData,
     });
   }
 }

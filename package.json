@@ -15,7 +15,7 @@
     "bcryptjs": "^3.0.3",
     "dotenv": "^17.4.2",
     "exceljs": "^4.4.0",
-    "groq-sdk": "^1.5.0",
+    "groq-sdk": "^1.6.0",
     "jsonwebtoken": "^9.0.3",
     "lucide-react": "^1.21.0",
     "next": "16.2.9",
@@ -25,7 +25,6 @@
     "react-dom": "19.2.4",
     "react-hook-form": "^7.81.0",
     "recharts": "^3.10.1",
-    "resend": "^6.16.0",
     "zod": "^4.4.3"
   },
   "devDependencies": {
