@@ -54,7 +54,6 @@ const SubscriptionCard = ({ title, text, money, button, isFirstButton }) => {
           alert(
             `Payment Successful! Payment ID: ${response.razorpay_payment_id}`,
           );
-          // Yahan aap payment success hone ke baad database update ya verification kar sakte hain
         },
         prefill: {
           name: "Shubh Mishra",
@@ -77,22 +76,25 @@ const SubscriptionCard = ({ title, text, money, button, isFirstButton }) => {
   };
 
   return (
-    <div className="bg-white rounded-xl w-90 px-5 py-3 shadow-sm border border-gray-100">
-      <h2 className="font-semibold text-2xl">{title}</h2>
-      <span className="font-normal text-xs text-gray-500">{text}</span>
+    <div className="bg-white rounded-xl w-90 px-5 py-3 shadow-sm border border-gray-100 flex flex-col justify-between duration-300 hover:scale-105 hover:shadow-xl transition-transform">
+      <div>
+        <h2 className="font-semibold text-2xl text-gray-900">{title}</h2>
+        <span className="font-normal text-xs text-gray-500">{text}</span>
 
-      <div className="flex my-5 items-baseline space-x-1">
-        <span className="text-4xl font-extrabold text-gray-900">{money}</span>
-        <span className="text-sm font-medium text-gray-500">/month</span>
+        <div className="flex my-5 items-baseline space-x-1">
+          <span className="text-4xl font-extrabold text-gray-900">{money}</span>
+          <span className="text-sm font-medium text-gray-500">/month</span>
+        </div>
       </div>
+
       <div className="flex items-center">
         <button
           onClick={handlePayment}
           disabled={loading}
-          className={`px-5 py-2 w-full rounded-xl cursor-pointer transition-all disabled:opacity-50 ${
+          className={`px-5 py-2 w-full rounded-xl cursor-pointer transition-all disabled:opacity-50 font-medium ${
             isFirstButton
-              ? "m-3 text-green-600 border border-green-600 hover:bg-green-50"
-              : "m-3 text-white bg-green-600 hover:bg-green-700"
+              ? "m-3 text-[#10B981] border border-[#10B981] hover:bg-[#10B981]/10"
+              : "m-3 text-white bg-[#10B981] hover:bg-[#059669] shadow-sm"
           }`}
         >
           {loading ? "Processing..." : button}
