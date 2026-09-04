@@ -50,6 +50,7 @@ const Sidebar = () => {
         <div className="flex items-center gap-3 justify-between px-4 py-5 border-b border border-[#0e3b53]/10">
           <div className="flex items-center gap-3 overflow-hidden">
             <Image
+              loading="lazy"
               src="/logo.svg"
               width={36}
               height={36}

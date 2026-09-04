@@ -66,6 +66,10 @@ class ApiClient {
     });
   }
 
+  async getProfileInfo() {
+    return this.request("/api/user/profile/");
+  }
+
   // borrower methods
   async addBorrower(borrowerData) {
     return this.request("/api/borrowers", {
