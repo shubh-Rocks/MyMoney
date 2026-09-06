@@ -5,7 +5,6 @@ import { authService } from "@/services/auth.service";
 import { cashFlowService } from "@/services/cash.flow.service";
 import { cookies } from "next/headers";
 import { AppError } from "@/errors/app-error";
-import { success } from "zod";
 
 export async function GET(req) {
   try {
@@ -41,7 +40,7 @@ export async function GET(req) {
         { status: 400 },
       );
     }
-    const forecast = await cashFlowService.generateForcast(
+    const forecast = await cashFlowService.generateForecast(
       currentUser.id,
       range,
     );

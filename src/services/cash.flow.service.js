@@ -4,52 +4,71 @@ import { groqService } from "./groq.service";
 class CashFlowService {
   async getForecastDataset(userId, days = 30) {
     const today = new Date();
+
+    // Historical data: last 30 days
     const historyStartDate = new Date(today);
-    historyStartDate.setDate(today.getDate() - 90);
+    historyStartDate.setDate(today.getDate() - 30);
 
-    const forcastingEndDate = new Date(today);
-    forcastingEndDate.setDate(today.getDate() + days);
+    // Forecast + upcoming dues
+    const forecastingEndDate = new Date(today);
+    forecastingEndDate.setDate(today.getDate() + days);
 
-    const [dailyColloection, upcomingDueLoans] = await Promise.all([
+    const [dailyCollections, upcomingDueLoans] = await Promise.all([
       cashFlowRepository.getDailyCollections(userId, historyStartDate, today),
 
-      cashFlowRepository.getUpcomingDueLoans(userId, today, forcastingEndDate),
+      cashFlowRepository.getUpcomingDueLoans(userId, today, forecastingEndDate),
     ]);
 
-    const totalHistoricalCollection = dailyColloection.reduce(
-      (sum, item) => sum + item.sum,
+    // Total amount collected historically
+    const totalHistoricalCollection = dailyCollections.reduce(
+      (sum, item) => sum + Number(item.amount || 0),
       0,
     );
 
-    const collectionDays = dailyColloection.length;
+    // Total historical days
+    const totalHistoricalDays = dailyCollections.length;
 
+    // Days on which at least one payment was received
+    const collectionDays = dailyCollections.filter(
+      (item) => Number(item.amount || 0) > 0,
+    ).length;
+
+    // Average collection per day
     const averageDailyCollection =
-      collectionDays > 0 ? totalHistoricalCollection / collectionDays : 0;
+      totalHistoricalDays > 0
+        ? totalHistoricalCollection / totalHistoricalDays
+        : 0;
 
-    const upcommingDueAmount = upcomingDueLoans.reduce(
-      (sum, loan) => sum + loan.remainingAmount,
+    // Total upcoming amount
+    const upcomingDueAmount = upcomingDueLoans.reduce(
+      (sum, loan) => sum + Number(loan.remainingAmount || 0),
       0,
     );
 
     return {
-      forcastDays: days,
+      forecastDays: days,
+
       historical: {
-        periodDays: 90,
+        periodDays: totalHistoricalDays,
         totalCollection: totalHistoricalCollection,
         collectionDays,
         averageDailyCollection,
-        dailyColloection,
+        dailyCollections,
       },
 
       upcoming: {
-        totalDueAmount: upcomingDueLoans,
+        totalDueAmount: upcomingDueAmount,
         loanCount: upcomingDueLoans.length,
         loans: upcomingDueLoans,
       },
     };
   }
 
-  async generateForcast(userId, days = 30) {
+  async generateForecast(userId, days = 30) {
+    if (![30, 60, 90].includes(days)) {
+      throw new Error("Forecast days must be 30, 60 or 90");
+    }
+
     const forecastData = await this.getForecastDataset(userId, days);
 
     const result = await groqService.forecastCashFlow(forecastData, days);

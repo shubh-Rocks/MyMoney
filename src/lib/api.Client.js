@@ -128,6 +128,10 @@ class ApiClient {
       body: formData,
     });
   }
+
+  async getCashFlowForecast(range = 30) {
+    return this.request(`/api/ai/cash-flow?range=${range}`);
+  }
 }
 
 export const apiClient = new ApiClient();

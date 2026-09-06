@@ -2,6 +2,8 @@ import prisma from "@/lib/prisma";
 
 class CashFlowRepository {
   async getDailyCollections(userId, startDate, endDate) {
+
+
     const payments = await prisma.loanPayment.findMany({
       where: {
         userId,
@@ -11,28 +13,47 @@ class CashFlowRepository {
         },
       },
       select: {
+        id: true,
         amount: true,
         paymentDate: true,
+        userId: true,
       },
       orderBy: {
         paymentDate: "asc",
       },
     });
 
-    const dailyColloection = {};
+
+    const paymentMap = {};
+
     for (const payment of payments) {
       const date = payment.paymentDate.toISOString().split("T")[0];
 
-      if (!dailyColloection[date]) {
-        dailyColloection[date] = 0;
+      if (!paymentMap[date]) {
+        paymentMap[date] = 0;
       }
 
-      dailyColloection[date] += Number(payment.amount);
+      paymentMap[date] += Number(payment.amount);
     }
-    return Object.entries(dailyColloection).map(([date, amount]) => ({
-      date,
-      amount,
-    }));
+
+    const dailyCollections = [];
+
+    const currentDate = new Date(startDate);
+
+    while (currentDate <= endDate) {
+      const date = currentDate.toISOString().split("T")[0];
+
+      dailyCollections.push({
+        date,
+        amount: paymentMap[date] || 0,
+      });
+
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+
+    console.log("DAILY COLLECTIONS:", dailyCollections);
+
+    return dailyCollections;
   }
 
   async getUpcomingDueLoans(userId, startDate, endDate) {
