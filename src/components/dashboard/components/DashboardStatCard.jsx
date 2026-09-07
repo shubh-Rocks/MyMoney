@@ -12,7 +12,7 @@ const DashboardStatCard = () => {
     const fetchDashboardData = async () => {
       try {
         const response = await apiClient.BorrowersLoanSummary();
-        console.log(response.BorrowersLoanSummary);
+      
         setSummaryData(response.BorrowersLoanSummary);
       } catch (error) {
         console.error("error fetching data:", error);

@@ -40,7 +40,11 @@ export default function KanbanColumn({
       {/* Cards List Container */}
       <div className="flex flex-col gap-3 flex-1">
         {columnLoans.map((loan) => (
-          <LoanCard key={loan.id} loan={loan} onDragStart={onDragStart} />
+          <LoanCard
+            key={loan.id}
+            loan={loan}
+            onDragStart={onDragStart}
+          />
         ))}
 
         {columnLoans.length === 0 && (

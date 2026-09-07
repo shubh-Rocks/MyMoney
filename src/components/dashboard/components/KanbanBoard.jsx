@@ -23,7 +23,6 @@ export default function KanbanBoard({ searchTerm = "" }) {
         const response = await apiClient.getBorrower();
 
         const borrowers = response.borrowers;
-
         const formattedLoans = borrowers.flatMap((borrower) =>
           borrower.loans.map((loan) => ({
             ...loan,
@@ -31,7 +30,6 @@ export default function KanbanBoard({ searchTerm = "" }) {
             borrowerName: borrower.name,
           })),
         );
-
         setLoans(formattedLoans);
       } catch (error) {
         console.error("Error fetching loans", error);

@@ -1,7 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import { Clock, CheckCircle2, Phone, MoreVertical } from "lucide-react";
+import PaymentForm from "../form/PaymentForm";
 
 export default function LoanCard({ loan, onDragStart }) {
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [selectedData, setSelectedData] = useState({
+    loanId: "",
+    borrowerId: "",
+  });
+
+  const handleOpenForm = ( loanId, borrowerId ) => {
+    setSelectedData({ loanId: loanId, borrowerId: borrowerId }); 
+    setIsFormOpen(true);
+  };
+
   const isPending =
     loan.status === "ACTIVE" || loan.status === "PARTIALLY_PAID";
 
@@ -87,7 +99,8 @@ export default function LoanCard({ loan, onDragStart }) {
       {!isPaid ? (
         <div className="flex gap-2 pt-2 border-t border-slate-100">
           <button
-            className={`flex-1 py-2 rounded-lg text-xs font-semibold text-white shadow-sm transition-colors ${
+            onClick={() => handleOpenForm(loan.id, loan.borrowerId)}
+            className={`flex-1 cursor-pointer py-2 rounded-lg text-xs font-semibold text-white shadow-sm transition-colors ${
               isOverdue
                 ? "bg-rose-500 hover:bg-rose-600"
                 : "bg-emerald-500 hover:bg-emerald-600"
@@ -106,6 +119,14 @@ export default function LoanCard({ loan, onDragStart }) {
             Fully settled
           </span>
         </div>
+      )}
+
+      {isFormOpen && (
+        <PaymentForm
+          loanId={selectedData.loanId}
+          borrowerId={selectedData.borrowerId}
+          onClose={() => setIsFormOpen(false)}
+        />
       )}
     </div>
   );
