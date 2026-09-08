@@ -6,6 +6,9 @@ class UserRepositry {
       where: {
         email,
       },
+      include: {
+        profile: true,
+      },
     });
   }
 
@@ -61,8 +64,53 @@ class UserRepositry {
             fullName: true,
             phone: true,
             businessName: true,
+            emailVerified: true,
           },
         },
+      },
+    });
+  }
+
+  updateEmailVerified(userId) {
+    return prisma.userProfile.update({
+      where: {
+        userId,
+      },
+      data: {
+        emailVerified: true,
+      },
+    });
+  }
+
+  upsertVerificationToken({ email, otp, expiresAt }) {
+    return prisma.verificationToken.upsert({
+      where: {
+        email,
+      },
+      update: {
+        otp,
+        expiresAt,
+      },
+      create: {
+        email,
+        otp,
+        expiresAt,
+      },
+    });
+  }
+
+  findVerificationToken(email) {
+    return prisma.verificationToken.findUnique({
+      where: {
+        email,
+      },
+    });
+  }
+
+  deleteVerificationToken(email) {
+    return prisma.verificationToken.deleteMany({
+      where: {
+        email,
       },
     });
   }

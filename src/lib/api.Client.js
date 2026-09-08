@@ -24,10 +24,19 @@ class ApiClient {
     }
 
     if (!response.ok) {
-      const error = await response.json().catch(() => ({
+      const errorPayload = await response.json().catch(() => ({
         error: "network error",
       }));
-      throw new Error(error.error || "Request failed");
+      const message =
+        typeof errorPayload.error === "string"
+          ? errorPayload.error
+          : errorPayload.error?.message ||
+            errorPayload.message ||
+            "Request failed";
+
+      const error = new Error(message);
+      error.details = errorPayload.details || errorPayload.error?.details;
+      throw error;
     }
     return response.json();
   }
@@ -56,6 +65,21 @@ class ApiClient {
 
   async getCurrentUser() {
     return this.request("/api/auth/me");
+  }
+
+  // OTP methods
+  async verifyOtp(email, otp) {
+    return this.request("/api/auth/verify-otp", {
+      method: "POST",
+      body: JSON.stringify({ email, otp }),
+    });
+  }
+
+  async resendOtp(email) {
+    return this.request("/api/auth/resend-otp", {
+      method: "POST",
+      body: JSON.stringify({ email }),
+    });
   }
 
   // Profile update method

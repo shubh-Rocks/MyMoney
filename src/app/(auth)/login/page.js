@@ -63,9 +63,9 @@ export default function LoginPage() {
           </div>
 
           {/* General Error Message agar ho toh */}
-          {loginState?.message && (
+          {loginState?.error && (
             <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-red-600 text-sm text-center font-medium">
-              {loginState.message}
+              {loginState.error}
             </div>
           )}
 
@@ -105,7 +105,7 @@ export default function LoginPage() {
           </button>
 
           <p className="text-center text-[#0E3B53]/80 text-sm mt-6 font-medium">
-            Don't have an account?{" "}
+            Don&apos;t have an account?{" "}
             <Link
               href="/register"
               className="text-[#1F9D55] font-bold hover:underline transition-all"

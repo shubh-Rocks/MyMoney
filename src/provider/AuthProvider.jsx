@@ -50,7 +50,9 @@ export const AuthProvider = ({ children }) => {
         router.push("/dashboard");
         return { success: true, user: data.user };
       } catch (error) {
-        return { error: "Invalid Credentials. please try again" };
+        return {
+          error: error.message || "Invalid Credentials. please try again",
+        };
       }
     },
     { error: "", success: undefined, user: undefined },

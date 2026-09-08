@@ -30,8 +30,13 @@ export default function RegisterPage() {
       }
 
       try {
-        await apiClient.register(validatedFields.data);
-        return { error: null, fieldErrors: null, success: true };
+        const result = await apiClient.register(validatedFields.data);
+        return {
+          error: null,
+          fieldErrors: null,
+          success: true,
+          email: result.data?.user?.email || validatedFields.data.email,
+        };
       } catch (error) {
         return {
           error: error.message || "Registration failed. Please try again.",
@@ -45,9 +50,9 @@ export default function RegisterPage() {
 
   useEffect(() => {
     if (state?.success) {
-      router.push("/dashboard");
+      router.push(`/verify-otp?email=${encodeURIComponent(state.email)}`);
     }
-  }, [state?.success, router]);
+  }, [state?.success, state?.email, router]);
 
   return (
     <div className="min-h-screen bg-[#f6f8fa] flex items-center justify-center p-4">

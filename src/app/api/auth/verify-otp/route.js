@@ -1,6 +1,6 @@
 import { AppError } from "@/errors/app-error";
 import { authService } from "@/services/auth.service";
-import { registerSchema } from "@/validations/auth.validations";
+import { verifyOtpSchema } from "@/validations/auth.validations";
 import { NextResponse } from "next/server";
 import z, { ZodError } from "zod";
 
@@ -8,7 +8,7 @@ export async function POST(req) {
   try {
     const body = await req.json();
 
-    const validatedData = registerSchema.safeParse(body);
+    const validatedData = verifyOtpSchema.safeParse(body);
 
     if (!validatedData.success) {
       return NextResponse.json(
@@ -20,12 +20,20 @@ export async function POST(req) {
       );
     }
 
-    const { user } = await authService.register(validatedData.data);
+    const { user, token } = await authService.verifyOtp(validatedData.data);
 
     const response = NextResponse.json(
-      { success: true, data: { user }, message: "OTP sent to your email." },
-      { status: 201 },
+      { success: true, data: { user } },
+      { status: 200 },
     );
+
+    response.cookies.set("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 60 * 60 * 24 * 7,
+      path: "/",
+    });
 
     return response;
   } catch (error) {
@@ -34,7 +42,7 @@ export async function POST(req) {
         success: false,
         error: {
           code: "validation error",
-          message: "invalid login data",
+          message: "invalid otp data",
           details: error.issues,
         },
       });
@@ -52,7 +60,7 @@ export async function POST(req) {
       );
     }
 
-    console.log("post/api/auth/register failed:", error);
+    console.log("post/api/auth/verify-otp failed:", error);
 
     return NextResponse.json(
       {
@@ -62,9 +70,7 @@ export async function POST(req) {
           message: "internal server error",
         },
       },
-      {
-        status: 500,
-      },
+      { status: 500 },
     );
   }
 }

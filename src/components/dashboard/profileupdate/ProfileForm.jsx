@@ -53,11 +53,11 @@ const ProfileForm = () => {
     setGeneralError("");
 
     const rawData = {
-      fullName: name,
-      email: email,
-      phone: phone,
-      gender: gender,
-      bussinessName: businessName,
+      fullName: name || "",
+      email: email || "",
+      phone: phone || "",
+      gender: gender || "",
+      businessName: businessName || "",
     };
 
     const validatedFields = updateProfileSchema.safeParse(rawData);
@@ -70,8 +70,9 @@ const ProfileForm = () => {
     setIsUpdating(true);
 
     try {
+      // FIX: Yahan 'fullName: name' pass kiya hai taaki backend ko sahi value mile
       await apiClient.updateProfile({
-        name,
+        fullName: name,
         email,
         phone,
         gender,
@@ -106,7 +107,7 @@ const ProfileForm = () => {
 
   return (
     <div className="bg-white p-8 border border-[#0e3b53]/20 shadow-lg w-full max-w-md mx-auto rounded-3xl">
-      <div className=" flex justify-center items-center w-full gap-5">
+      <div className="flex justify-center items-center w-full gap-5">
         <div className="w-28 h-28">
           {user.avatar ? (
             <img
@@ -150,7 +151,7 @@ const ProfileForm = () => {
             )}
           </div>
 
-          {/* Email with Verification Badge / Button */}
+          {/* Email */}
           <div className="flex flex-col gap-1.5">
             <label className="text-sm font-medium text-gray-700">
               Email Address
@@ -169,38 +170,12 @@ const ProfileForm = () => {
               ) : (
                 <button
                   type="button"
-                  onClick={handleSendOtp}
                   className="bg-amber-500 text-white text-xs px-3 py-2 rounded-xl hover:bg-amber-600 whitespace-nowrap transition-all"
                 >
                   Verify Email
                 </button>
               )}
             </div>
-            {showOtpModal && (
-              <div className="mt-2 p-3 bg-cyan-50 border border-cyan-200 rounded-xl flex flex-col gap-2">
-                <p className="text-xs text-gray-700">
-                  Enter the 6-digit code sent to your email:
-                </p>
-                <div className="flex gap-2">
-                  <input
-                    type="text"
-                    maxLength={6}
-                    value={otpInput}
-                    onChange={(e) => setOtpInput(e.target.value)}
-                    placeholder="123456"
-                    className="border border-gray-300 rounded-lg px-3 py-1.5 text-center tracking-widest font-bold text-sm w-full bg-white"
-                  />
-                  <button
-                    type="button"
-                    onClick={handleVerifyOtp}
-                    disabled={verifying}
-                    className="bg-cyan-600 text-white text-xs px-3 py-1.5 rounded-lg hover:bg-cyan-700 transition-all"
-                  >
-                    {verifying ? "Checking..." : "Confirm"}
-                  </button>
-                </div>
-              </div>
-            )}
           </div>
 
           {/* Phone */}
@@ -250,9 +225,9 @@ const ProfileForm = () => {
               onChange={(e) => setBusinessName(e.target.value)}
               className="border cursor-pointer border-gray-300 rounded-xl px-4 py-2 focus:outline-none focus:border-cyan-400 focus:shadow-[0_0_10px_rgba(34,211,238,0.2)] transition-all"
             />
-            {fieldErrors.bussinessName && (
+            {fieldErrors.businessName && (
               <span className="text-xs text-red-500">
-                {fieldErrors.bussinessName[0]}
+                {fieldErrors.businessName[0]}
               </span>
             )}
           </div>

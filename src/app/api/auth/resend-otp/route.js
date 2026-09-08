@@ -1,6 +1,6 @@
 import { AppError } from "@/errors/app-error";
 import { authService } from "@/services/auth.service";
-import { registerSchema } from "@/validations/auth.validations";
+import { resendOtpSchema } from "@/validations/auth.validations";
 import { NextResponse } from "next/server";
 import z, { ZodError } from "zod";
 
@@ -8,7 +8,7 @@ export async function POST(req) {
   try {
     const body = await req.json();
 
-    const validatedData = registerSchema.safeParse(body);
+    const validatedData = resendOtpSchema.safeParse(body);
 
     if (!validatedData.success) {
       return NextResponse.json(
@@ -20,21 +20,19 @@ export async function POST(req) {
       );
     }
 
-    const { user } = await authService.register(validatedData.data);
+    const result = await authService.resendOtp(validatedData.data);
 
-    const response = NextResponse.json(
-      { success: true, data: { user }, message: "OTP sent to your email." },
-      { status: 201 },
+    return NextResponse.json(
+      { success: true, message: result.message },
+      { status: 200 },
     );
-
-    return response;
   } catch (error) {
     if (error instanceof ZodError) {
       return NextResponse.json({
         success: false,
         error: {
           code: "validation error",
-          message: "invalid login data",
+          message: "invalid data",
           details: error.issues,
         },
       });
@@ -52,7 +50,7 @@ export async function POST(req) {
       );
     }
 
-    console.log("post/api/auth/register failed:", error);
+    console.log("post/api/auth/resend-otp failed:", error);
 
     return NextResponse.json(
       {
@@ -62,9 +60,7 @@ export async function POST(req) {
           message: "internal server error",
         },
       },
-      {
-        status: 500,
-      },
+      { status: 500 },
     );
   }
 }
