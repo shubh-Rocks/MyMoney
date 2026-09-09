@@ -28,6 +28,7 @@ export default function KanbanBoard({ searchTerm = "" }) {
             ...loan,
             borrowerId: borrower.id,
             borrowerName: borrower.name,
+            phone: borrower.phone,
           })),
         );
         setLoans(formattedLoans);

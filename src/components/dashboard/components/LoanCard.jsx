@@ -1,5 +1,10 @@
 import React, { useState } from "react";
-import { Clock, CheckCircle2, Phone, MoreVertical } from "lucide-react";
+import {
+  Clock,
+  CheckCircle2,
+  MoreVertical,
+  MessageSquareText,
+} from "lucide-react";
 import PaymentForm from "../form/PaymentForm";
 
 export default function LoanCard({ loan, onDragStart }) {
@@ -9,8 +14,8 @@ export default function LoanCard({ loan, onDragStart }) {
     borrowerId: "",
   });
 
-  const handleOpenForm = ( loanId, borrowerId ) => {
-    setSelectedData({ loanId: loanId, borrowerId: borrowerId }); 
+  const handleOpenForm = (loanId, borrowerId) => {
+    setSelectedData({ loanId: loanId, borrowerId: borrowerId });
     setIsFormOpen(true);
   };
 
@@ -19,6 +24,22 @@ export default function LoanCard({ loan, onDragStart }) {
 
   const isOverdue = loan.status === "OVERDUE";
   const isPaid = loan.status === "PAID";
+
+  const handleWhatsAppClick = (loan) => {
+    const phoneNumber = loan.phone || loan.borrowerPhone;
+
+    if (!phoneNumber) {
+      alert("borrower phone number not availble nhi hai");
+      return;
+    }
+
+    const borrowerName = loan.borrowerName || loan.borrower?.name || "Customer";
+    const amount = loan.remainingAmount || loan.amount || 0;
+    const message = `Hello ${borrowerName}, yeh aapke loan/payment ke regarding reminder hai. Aapka pending amount ₹${amount} hai. Kripya samay par bhugtan karein. Dhanyawad!`;
+    const encodedMessage = encodeURIComponent(message);
+    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+    window.open(whatsappUrl, "_blank");
+  };
 
   return (
     <div
@@ -110,7 +131,11 @@ export default function LoanCard({ loan, onDragStart }) {
           </button>
 
           <button className="p-2 border border-slate-200 rounded-lg text-slate-600 hover:bg-slate-50">
-            <Phone size={15} className="text-sky-500" />
+            <MessageSquareText
+              size={18}
+              onClick={() => handleWhatsAppClick(loan)}
+              className="text-sky-500 cursor-pointer"
+            />
           </button>
         </div>
       ) : (
