@@ -27,75 +27,72 @@ const MobileApp = () => {
       badgeStyles: "bg-[#faeed6] text-[#b88222]",
     },
   ];
+
   return (
-    <section className="mt-30 flex gap-30  justify-center">
-      <div className=" h-[450px] rounded-4xl border-[10px] w-72">
-        {/* first section inside mobileApp card*/}
-        <div>
-          <div className="flex justify-between px-3.5 py-3">
-            <span className="text-sm font-semibold">9:47</span>
-            <span>●●● 5G </span>
+    <section className="mt-16 md:mt-24 lg:mt-30 flex flex-col lg:flex-row items-center justify-center gap-12 lg:gap-20 px-6 md:px-12 lg:px-20 overflow-hidden">
+      <div className="w-full max-w-[300px] h-[520px] rounded-[3rem] border-[10px] border-slate-900 bg-slate-50 shadow-2xl relative flex flex-col justify-between overflow-hidden shrink-0">
+        <div className="bg-white pt-3 pb-2 px-4 border-b border-gray-100">
+          <div className="flex justify-between items-center text-xs font-semibold text-slate-600 mb-3">
+            <span>9:47</span>
+            <span>5G ●●●</span>
           </div>
 
-          <div className="flex flex-col p-3">
-            <span className="pb-3">Total to collect</span>
-            <span className="font-bold text-3xl">₹ 84,302</span>
+          <div className="flex flex-col mb-3">
+            <span className="text-xs text-gray-400 font-medium">
+              Total to collect
+            </span>
+            <span className="font-extrabold text-2xl text-slate-800">
+              ₹ 84,302
+            </span>
           </div>
 
-          <div className="flex items-center px-3 justify-between">
-            <div className="bg-[#26A257] px-4 py-1 rounded-2xl text-white">
+          <div className="flex items-center justify-between gap-1 text-xs">
+            <div className="bg-[#26A257] px-3 py-1 rounded-xl text-white font-medium">
               All
             </div>
-            <div className="bg-white border px-3 py-1 border-gray-400 rounded-2xl">
+            <div className="bg-white border px-3 py-1 border-gray-300 rounded-xl text-slate-600 font-medium">
               Paid
             </div>
-            <div className="bg-white border border-gray-400  rounded-2xl px-3 py-1">
+            <div className="bg-white border border-gray-300 rounded-xl px-3 py-1 text-slate-600 font-medium">
               Due
             </div>
           </div>
         </div>
 
-        {/* second section inside mobileApp card */}
-        <div className="relative max-w-sm mx-auto bg-white h-60 p-4 rounded-4xl mt-3 font-sans">
+        <div className="bg-white flex-1 p-4 relative font-sans overflow-y-auto">
           {contacts.map((contact) => (
             <React.Fragment key={contact.id}>
-              {/* List Item */}
-              <div className="flex items-center justify-between py-3">
-                <div className="flex items-center gap-5">
-                  {/* Avatar */}
+              <div className="flex items-center justify-between py-2.5">
+                <div className="flex items-center gap-3">
                   <div
-                    className={`w-5 h-5 rounded-full flex items-center justify-center text-white font-bold text-[8px] ${contact.avatarBg}`}
+                    className={`w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-xs ${contact.avatarBg}`}
                   >
                     {contact.initials}
                   </div>
 
-                  {/* Name */}
-                  <h2 className="text-[#072a33] font-semibold text-xs">
+                  <h2 className="text-[#072a33] font-semibold text-xs sm:text-sm">
                     {contact.name}
                   </h2>
                 </div>
 
-                {/* Badge */}
                 <div
-                  className={`px-4 py-1.5 rounded-full font-bold text-[10px] ${contact.badgeStyles}`}
+                  className={`px-3 py-1 rounded-full font-bold text-[10px] sm:text-xs ${contact.badgeStyles}`}
                 >
                   {contact.status}
                 </div>
               </div>
 
-              {/* Divider line */}
-              <hr className="border-t-[1.5px] border-[#e8e4d9]" />
+              <hr className="border-t border-[#e8e4d9]/60" />
             </React.Fragment>
           ))}
 
-          {/* Floating Action Button (FAB) */}
           <button
-            className="absolute bottom-2 right-4 w-10 h-10 rounded-full bg-[#279f5c] text-white flex items-center justify-center shadow-[0_12px_24px_rgba(39,159,92,0.4)] hover:bg-[#1f874d] transition-colors"
+            className="absolute bottom-4 right-4 w-10 h-10 rounded-full bg-[#279f5c] text-white flex items-center justify-center shadow-[0_8px_20px_rgba(39,159,92,0.4)] hover:bg-[#1f874d] transition-colors"
             aria-label="Add new"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4"
+              className="h-5 w-5"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -111,36 +108,55 @@ const MobileApp = () => {
         </div>
       </div>
 
-      <div className="w-2xl py-3 leading-6">
-        <span className="font-bold text-sm text-green-800">MOBILE APP</span>
-        <h2 className="text-black font-bold text-xl mt-3 mb-2">
+      <div className="w-full lg:max-w-xl text-center lg:text-left leading-relaxed">
+        <span className="font-bold text-xs sm:text-sm tracking-widest text-[#229754] uppercase bg-[#e4f5e9] px-3 py-1 rounded-full">
+          MOBILE APP
+        </span>
+
+        <h2 className="text-slate-900 font-extrabold text-2xl sm:text-3xl md:text-4xl mt-4 mb-3 tracking-tight">
           Your business, always with you.
         </h2>
-        <span className="text-[15px] font-semibold ">
+
+        <p className="text-gray-600 text-sm sm:text-base mb-6">
           Whether you're at your shop or at home, your records are always within
           reach. Manage everything on the go—even without an internet
           connection.
-        </span>
-        <h3 className="font-bold text-xl mt-3 mb-2"> Offline Mode</h3>
-        <span className="text-gray-500 ">
-          No internet? No problem. Record transactions anytime. Your data
-          automatically syncs once you're back online.
-        </span>
-        <h4 className="font-bold text-xl mt-3 mb-2">Smart Reminders</h4>
-        <span className="text-gray-500 ">
-          Automatically send friendly WhatsApp payment reminders to customers
-          before their due dates—no manual follow-up needed.
-        </span>
-        <h5 className="font-bold text-xl mt-3 mb-2">
-          Available in Hindi & English
-        </h5>
-        <span className="text-gray-500 ">
-          Use the app in the language you're most comfortable with. Switch
-          seamlessly between Hindi and English anytime.
-        </span>
+        </p>
+
+        {/* Feature 1 */}
+        <div className="mb-4">
+          <h3 className="font-bold text-lg text-slate-800 mb-1">
+            Offline Mode
+          </h3>
+          <p className="text-gray-500 text-sm sm:text-base">
+            No internet? No problem. Record transactions anytime. Your data
+            automatically syncs once you're back online.
+          </p>
+        </div>
+
+        {/* Feature 2 */}
+        <div className="mb-4">
+          <h4 className="font-bold text-lg text-slate-800 mb-1">
+            Smart Reminders
+          </h4>
+          <p className="text-gray-500 text-sm sm:text-base">
+            Automatically send friendly WhatsApp payment reminders to customers
+            before their due dates—no manual follow-up needed.
+          </p>
+        </div>
+
+        {/* Feature 3 */}
+        <div>
+          <h5 className="font-bold text-lg text-slate-800 mb-1">
+            Available in Hindi & English
+          </h5>
+          <p className="text-gray-500 text-sm sm:text-base">
+            Use the app in the language you're most comfortable with. Switch
+            seamlessly between Hindi and English anytime.
+          </p>
+        </div>
       </div>
     </section>
   );
 };
-
 export default MobileApp;

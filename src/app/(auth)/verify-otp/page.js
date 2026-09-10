@@ -80,7 +80,7 @@ function VerifyOtpContent() {
             </label>
             <input
               name="otp"
-              type="text"
+              type="number"
               inputMode="numeric"
               maxLength={6}
               placeholder="123456"

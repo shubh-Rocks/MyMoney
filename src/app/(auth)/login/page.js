@@ -6,28 +6,29 @@ export default function LoginPage() {
   const { login, loginState, isLoginPending } = useAuth();
 
   return (
-    <div className="min-h-screen bg-[#f6f8fa] flex items-center justify-center p-4">
-      <div className="w-full max-w-md bg-[#f6f2f2] rounded-2xl p-8 shadow-2xl">
-        <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold text-[#0E3B53] mb-2 tracking-tight">
+    <div className="min-h-screen bg-[#f6f8fa] flex items-center justify-center p-4 sm:p-6">
+      <div className="w-full max-w-md bg-[#f6f2f2] rounded-2xl p-6 sm:p-8 shadow-2xl">
+        {/* Header Section */}
+        <div className="text-center mb-6 sm:mb-8">
+          <h2 className="text-2xl sm:text-3xl font-bold text-[#0E3B53] mb-2 tracking-tight">
             Welcome Back
           </h2>
-          <p className="text-[#0E3B53]/70 text-sm font-medium">
+          <p className="text-[#0E3B53]/70 text-xs sm:text-sm font-medium">
             Please enter your details to sign in.
           </p>
         </div>
 
-        <form action={login} className="space-y-5">
+        <form action={login} className="space-y-4 sm:space-y-5">
           {/* Email Field */}
           <div>
-            <label className="block text-sm font-bold text-[#0E3B53] mb-1.5 ml-1">
+            <label className="block text-xs sm:text-sm font-bold text-[#0E3B53] mb-1.5 ml-1">
               Email Address
             </label>
             <input
               type="email"
               name="email"
               placeholder="hello@gmail.com"
-              className="w-full px-4 py-3.5 bg-white border border-[#0e3b53]/20 rounded-xl text-[#0E3b53] placeholder-[#0E3b53]/40 focus:outline-none focus:border-[#1f9d55] focus:ring-2 focus:ring-[#1f9d55]/35 transition-all shadow-sm"
+              className="w-full px-4 py-3 sm:py-3.5 bg-white border border-[#0e3b53]/20 rounded-xl text-sm sm:text-base text-[#0E3b53] placeholder-[#0E3b53]/40 focus:outline-none focus:border-[#1f9d55] focus:ring-2 focus:ring-[#1f9d55]/35 transition-all shadow-sm"
             />
             {loginState?.fieldErrors?.email && (
               <p className="text-red-500 text-xs mt-1.5 ml-1 font-medium">
@@ -39,7 +40,7 @@ export default function LoginPage() {
           {/* Password Field */}
           <div>
             <div className="flex justify-between items-center mb-1.5 ml-1 mr-1">
-              <label className="block text-sm font-bold text-[#0E3B53]">
+              <label className="block text-xs sm:text-sm font-bold text-[#0E3B53]">
                 Password
               </label>
               <Link
@@ -53,7 +54,7 @@ export default function LoginPage() {
               type="password"
               name="password"
               placeholder="••••••••"
-              className="w-full px-4 py-3.5 bg-white border border-[#0E3B53]/20 rounded-xl text-[#0E3B53] placeholder-[#0E3B53]/40 focus:outline-none focus:border-[#1F9D55] focus:ring-2 focus:ring-[#1F9D55]/30 transition-all shadow-sm"
+              className="w-full px-4 py-3 sm:py-3.5 bg-white border border-[#0E3B53]/20 rounded-xl text-sm sm:text-base text-[#0E3B53] placeholder-[#0E3B53]/40 focus:outline-none focus:border-[#1F9D55] focus:ring-2 focus:ring-[#1F9D55]/30 transition-all shadow-sm"
             />
             {loginState?.fieldErrors?.password && (
               <p className="text-red-500 text-xs mt-1.5 ml-1 font-medium">
@@ -62,9 +63,9 @@ export default function LoginPage() {
             )}
           </div>
 
-          {/* General Error Message agar ho toh */}
+          {/* General Error Message */}
           {loginState?.error && (
-            <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-red-600 text-sm text-center font-medium">
+            <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-red-600 text-xs sm:text-sm text-center font-medium">
               {loginState.error}
             </div>
           )}
@@ -73,7 +74,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={isLoginPending}
-            className="w-full mt-2 py-3.5 px-4 bg-[#1F9D55] hover:bg-[#1A8A4A] text-[#FAF7EF] font-bold rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-70 disabled:cursor-not-allowed flex justify-center items-center"
+            className="w-full mt-2 py-3.5 px-4 bg-[#1F9D55] hover:bg-[#1A8A4A] text-[#FAF7EF] font-bold text-sm sm:text-base rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-70 disabled:cursor-not-allowed flex justify-center items-center"
           >
             {isLoginPending ? (
               <span className="flex items-center gap-2">
@@ -104,7 +105,8 @@ export default function LoginPage() {
             )}
           </button>
 
-          <p className="text-center text-[#0E3B53]/80 text-sm mt-6 font-medium">
+          {/* Footer Link */}
+          <p className="text-center text-[#0E3B53]/80 text-xs sm:text-sm mt-6 font-medium">
             Don&apos;t have an account?{" "}
             <Link
               href="/register"
@@ -113,7 +115,6 @@ export default function LoginPage() {
               Create one
             </Link>
           </p>
-          
         </form>
       </div>
     </div>
