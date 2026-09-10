@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { CheckCircle2, ChevronRight, X } from "lucide-react";
+import { apiClient } from "@/lib/api.Client"; // Apne path ke hisab se check kar lein
 
 export default function HelpModals({
   selectedCategory,
@@ -8,9 +9,36 @@ export default function HelpModals({
   setSupportModalOpen,
   supportType,
   supportFormSubmitted,
-  handleSupportSubmit,
   toastMessage,
 }) {
+  // Form ke liye states add kiye hain
+  const [name, setName] = useState("Shubh Mishra");
+  const [email, setEmail] = useState("shubh@example.com");
+  const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const response = await apiClient.sendQuery({ name, email, message });
+
+      if (response.success) {
+        alert("Message sent successfully! We'll reply shortly.");
+        setMessage("");
+        setSupportModalOpen(false);
+      } else {
+        alert(response.error || "Something went wrong");
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      alert("Failed to send message.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       {toastMessage && (
@@ -21,7 +49,7 @@ export default function HelpModals({
       )}
 
       {selectedCategory && (
-        <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-xs flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 bg-black/45 backdrop-blur-xs flex items-center justify-center p-4">
           <div className="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 sm:p-8 shadow-2xl space-y-6">
             <div className="flex items-center justify-between border-b border-gray-100 pb-4">
               <div className="flex items-center space-x-3">
@@ -89,7 +117,7 @@ export default function HelpModals({
       )}
 
       {supportModalOpen && (
-        <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-xs flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 bg-black/45 backdrop-blur-xs flex items-center justify-center p-4">
           <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-6">
             <div className="flex items-center justify-between border-b border-gray-100 pb-4">
               <div>
@@ -123,7 +151,7 @@ export default function HelpModals({
                 </p>
               </div>
             ) : (
-              <form onSubmit={handleSupportSubmit} className="space-y-4">
+              <form onSubmit={handleFormSubmit} className="space-y-4">
                 <div>
                   <label className="block text-xs font-semibold text-gray-700 mb-1">
                     Your Name
@@ -131,7 +159,8 @@ export default function HelpModals({
                   <input
                     type="text"
                     required
-                    defaultValue="Shubh Mishra"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
                     className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#10B981]/30 focus:border-[#10B981]"
                   />
                 </div>
@@ -142,7 +171,8 @@ export default function HelpModals({
                   <input
                     type="email"
                     required
-                    defaultValue="shubh@example.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#10B981]/30 focus:border-[#10B981]"
                   />
                 </div>
@@ -153,6 +183,8 @@ export default function HelpModals({
                   <textarea
                     rows="4"
                     required
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
                     placeholder="Describe how we can help you..."
                     className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#10B981]/30 focus:border-[#10B981]"
                   />
@@ -161,15 +193,16 @@ export default function HelpModals({
                   <button
                     type="button"
                     onClick={() => setSupportModalOpen(false)}
-                    className="px-5 py-2.5 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-semibold transition-colors"
+                    className="px-5 py-2.5 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-semibold transition-colors cursor-pointer"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="px-6 py-2.5 rounded-xl bg-[#10B981] hover:bg-[#059669] text-white text-xs font-semibold transition-colors shadow-sm"
+                    disabled={loading}
+                    className="px-6 py-2.5 rounded-xl bg-[#10B981] hover:bg-[#059669] text-white text-xs font-semibold transition-colors shadow-sm cursor-pointer disabled:opacity-50"
                   >
-                    Submit Request
+                    {loading ? "Sending..." : "Submit Request"}
                   </button>
                 </div>
               </form>

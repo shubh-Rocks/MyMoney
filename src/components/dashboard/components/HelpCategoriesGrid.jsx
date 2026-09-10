@@ -115,7 +115,7 @@ export default function HelpCategoriesGrid({
             }}
             className="px-6 py-3.5 rounded-xl bg-[#10B981] hover:bg-[#059669] text-white text-sm font-semibold transition-colors shadow-sm inline-flex items-center space-x-2"
           >
-            <Send className="w-4 h-4" />
+            <Send className="w-4 h-4 cursor-pointer" />
             <span>Contact Support</span>
           </button>
 
@@ -124,7 +124,7 @@ export default function HelpCategoriesGrid({
               setSupportType("report");
               setSupportModalOpen(true);
             }}
-            className="px-6 py-3.5 rounded-xl bg-white hover:bg-gray-50 text-gray-700 border border-gray-200 text-sm font-semibold transition-colors shadow-sm"
+            className="px-6 py-3.5 rounded-xl bg-white hover:bg-gray-50 text-gray-700 border border-gray-200 text-sm font-semibold transition-colors shadow-sm cursor-pointer"
           >
             Report a Problem
           </button>

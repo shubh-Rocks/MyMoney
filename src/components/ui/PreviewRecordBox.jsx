@@ -104,7 +104,7 @@ const PreviewRecordBox = () => {
             </div>
           </div>
         </div>
-        <div className="absolute -bottom-24 left-2 sm:-bottom-12 sm:-left-10 w-48 sm:w-56 bg-white border-[5px] sm:border-[6px] border-[#103E57] rounded-[1.75rem] sm:rounded-[2rem] shadow-xl z-50 px-3 pb-3">
+        <div className="absolute -bottom-24 left-2 sm:-bottom-24 sm:-left-10 w-48 sm:w-56 bg-white border-[5px] sm:border-[6px] border-[#103E57] rounded-[1.75rem] sm:rounded-[2rem] shadow-xl z-50 px-3 pb-3">
           <div className="absolute top-2 left-1/2 -translate-x-1/2 w-8 h-1 rounded-full bg-gray-300"></div>
 
           {/* Green Alert Box */}

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import KanbanColumn from "./KanbanColumn";
 import { apiClient } from "@/lib/api.Client";
+import { date } from "zod";
 
 export default function KanbanBoard({ searchTerm = "" }) {
   const [loans, setLoans] = useState([]);
@@ -21,16 +22,35 @@ export default function KanbanBoard({ searchTerm = "" }) {
     async function fetchLoans() {
       try {
         const response = await apiClient.getBorrower();
-
         const borrowers = response.borrowers;
+
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); // Time reset karke sirf date compare karein
+
         const formattedLoans = borrowers.flatMap((borrower) =>
-          borrower.loans.map((loan) => ({
-            ...loan,
-            borrowerId: borrower.id,
-            borrowerName: borrower.name,
-            phone: borrower.phone,
-          })),
+          borrower.loans.map((loan) => {
+            let currentStatus = loan.status;
+
+            // Agar loan PAID nahi hai aur due date nikal chuki hai, toh automatic OVERDUE mark karein
+            if (currentStatus !== "PAID" && loan.dueDate) {
+              const dueDateObj = new Date(loan.dueDate);
+              dueDateObj.setHours(0, 0, 0, 0);
+
+              if (dueDateObj < today) {
+                currentStatus = "OVERDUE";
+              }
+            }
+
+            return {
+              ...loan,
+              status: currentStatus, // Updated status assign karein
+              borrowerId: borrower.id,
+              borrowerName: borrower.name,
+              phone: borrower.phone,
+            };
+          }),
         );
+
         setLoans(formattedLoans);
       } catch (error) {
         console.error("Error fetching loans", error);

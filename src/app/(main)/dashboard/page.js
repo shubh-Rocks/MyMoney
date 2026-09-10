@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import SearchBox from "@/components/dashboard/components/SearchBox";
 import KanbanBoard from "@/components/dashboard/components/KanbanBoard";
 
-export default function () {
+export default function DashboardPage() {
   const { user: rawUser } = useAuth();
   const user = rawUser?.data.user || rawUser?.user || rawUser;
   const userName = user?.profile?.fullName || user?.name || "User";
@@ -32,24 +32,40 @@ export default function () {
     const formattedDate = now.toLocaleDateString("en-GB", date);
     setCurrentDate(formattedDate);
   }, []);
+
   return (
-    <div className="bg-[#f6f8fa] min-h-screen">
-      <div className="my-3.5">
-        <h2 className=" font-bold font-stretch-100% text-3xl text-black ">
-          {greetings} ,{userName}
+    <div className="bg-[#f6f8fa] min-h-screen px-4 sm:px-6 lg:px-8 py-6">
+      {/* Header Greeting Section */}
+      <div className="mb-6">
+        <h2 className="font-bold text-2xl sm:text-3xl text-black tracking-tight">
+          {greetings}, {userName}
         </h2>
-        <p className="text-gray-500 text-base font-serif">
+        <p className="text-gray-500 text-sm sm:text-base font-serif mt-1">
           Here's what's happening with your udhaar today—{currentDate}
         </p>
       </div>
-      <DashboardStatCard />
-      <div className="flex mt-5 gap-5 justify-evenly">
-        <SearchBox searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-        <QuickAddCard />
-        <VoiceAssistanceCard />
+
+      {/* Stats Cards Section */}
+      <div className="mb-6">
+        <DashboardStatCard />
       </div>
+
+      {/* Interactive Toolbar (Search, Quick Add, Voice Assistant) */}
+      <div className="flex flex-col lg:flex-row items-stretch lg:items-center gap-4 my-6">
+        <div className="w-full lg:flex-1">
+          <SearchBox searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+        </div>
+        <div className="w-full lg:w-auto flex flex-col sm:flex-row gap-4">
+          <QuickAddCard />
+          <VoiceAssistanceCard />
+        </div>
+      </div>
+
+      {/* Modal & Kanban Board */}
       <FormModal />
-      <KanbanBoard searchTerm={searchTerm} />
+      <div className="w-full overflow-x-auto">
+        <KanbanBoard searchTerm={searchTerm} />
+      </div>
     </div>
   );
 }

@@ -168,6 +168,14 @@ class ApiClient {
   async getCashFlowForecast(range = 30) {
     return this.request(`/api/ai/cash-flow?range=${range}`);
   }
+
+  // contact support api
+  async sendQuery(queryData) {
+    return this.request("/api/contact", {
+      method: "POST",
+      body: JSON.stringify(queryData),
+    });
+  }
 }
 
 export const apiClient = new ApiClient();
