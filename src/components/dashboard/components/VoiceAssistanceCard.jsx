@@ -58,8 +58,6 @@ export default function VoiceAssistanceCard() {
     mediaRecorderRef.current.stop();
 
     setIsRecording(false);
-
-    console.log("Recording stopped");
   };
 
   const processVoice = async (audioBlob) => {
@@ -67,26 +65,23 @@ export default function VoiceAssistanceCard() {
       setIsProcessing(true);
 
       const formData = new FormData();
-
       formData.append("audio", audioBlob, "voice.webm");
-
-      console.log("Sending audio to backend...");
 
       const result = await apiClient.aiVoice(formData);
 
-      console.log("AI RESULT:", result);
+      const borrowerName = result.borrower?.name || result.name || "Customer";
+      const loanAmount =
+        result.borrower?.loans?.[0]?.amount || result.amount || "";
 
-      console.log("Transcript:", result.transcript);
+      alert("Borrower added successfully!");
 
-      console.log("Extracted Data:", result.data);
+      if (typeof fetchBorrowers === "function") {
+        fetchBorrowers();
+      }
 
-      alert(
-        `Name: ${result.data.borrower.name}\n` +
-          `Amount: ₹${result.data.loan.amount}`,
-      );
+      alert(`Name: ${borrowerName}\n` + `Amount: ₹${loanAmount}`);
     } catch (error) {
       console.error("Voice processing error:", error);
-
       alert(error.message || "Could not process voice input.");
     } finally {
       setIsProcessing(false);
@@ -128,7 +123,7 @@ export default function VoiceAssistanceCard() {
             ? "Understanding borrower details..."
             : isRecording
               ? "Speak borrower details..."
-              : '"Rahul gives 5000 rupees" — try it'}
+              : '"Add borrower by speaking" — try it'}
         </span>
       </div>
     </div>

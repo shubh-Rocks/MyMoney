@@ -1,5 +1,16 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "";
+// Apne ApiClient ki file ke upar yeh check add karein:
+const getBaseUrl = () => {
+  if (process.env.NEXT_PUBLIC_API_URL) return process.env.NEXT_PUBLIC_API_URL;
+  // Agar server-side par hai aur env variable nahi hai, toh localhost use karein
+  if (typeof window === "undefined") {
+    return process.env.VERCEL_URL
+      ? `https://${process.env.VERCEL_URL}`
+      : "http://localhost:3000";
+  }
+  return "";
+};
 
+const API_BASE_URL = getBaseUrl();
 class ApiClient {
   constructor() {
     this.baseUrl = API_BASE_URL;
@@ -95,10 +106,11 @@ class ApiClient {
   }
 
   // borrower methods
-  async addBorrower(borrowerData) {
+  async addBorrower(borrowerData, options = {}) {
     return this.request("/api/borrowers", {
       method: "POST",
       body: JSON.stringify(borrowerData),
+      ...options,
     });
   }
 

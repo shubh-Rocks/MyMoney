@@ -1,4 +1,6 @@
+import { apiClient } from "@/lib/api.Client";
 import Groq from "groq-sdk";
+import { cookies } from "next/headers";
 
 const groq = new Groq({
   apiKey: process.env.GROQ_API_KEY,
@@ -6,6 +8,19 @@ const groq = new Groq({
 
 export async function POST(request) {
   try {
+    const cookiesStore = await cookies();
+    const token = cookiesStore.get("token")?.value;
+
+    if (!token) {
+      return Response.json(
+        {
+          success: false,
+          message: "unauthorized:Token missing",
+        },
+        { status: 401 },
+      );
+    }
+
     const formData = await request.formData();
 
     const audioFile = formData.get("audio");
@@ -36,106 +51,63 @@ export async function POST(request) {
         {
           role: "system",
           content: `
-You extract borrower and loan information
-from Hindi, Hinglish, or English speech.
-
+You extract borrower, loan, and address information from speech.
 Extract ONLY information explicitly mentioned.
-
 Never invent missing information.
 
-Return borrower and loan information.
-
-If information is missing, return null.
-
-Phone numbers must be strings.
-Amount and interest rate must be numbers.
-Dates should use YYYY-MM-DD format.
-            `,
+Strict Formatting Rules:
+- name: String (min 3 chars).
+- email: Valid email string (use "@" instead of spoken words like "at the rate").
+- phone: Exactly 10 digits string.
+- lentDate & dueDate: YYYY-MM-DD format strings.
+- amount: Number (between 1000 and 1000000).
+- interestRate: Number (greater than 0 and max 100).
+- interestType: MUST BE EXACTLY uppercase string either "SIMPLE" or "COMPOUND".
+- street, city, state: Strings.
+- pincode: Exactly 6 digits string (e.g., "482001").`,
         },
-        {
-          role: "user",
-          content: transcript,
-        },
+        { role: "user", content: transcript },
       ],
-
       response_format: {
         type: "json_schema",
-
         json_schema: {
-          name: "borrower_loan",
-
+          name: "borrower_loan_schema",
           strict: true,
-
           schema: {
             type: "object",
-
             properties: {
-              borrower: {
-                type: "object",
-
-                properties: {
-                  name: {
-                    type: ["string", "null"],
-                  },
-
-                  phone: {
-                    type: ["string", "null"],
-                  },
-
-                  email: {
-                    type: ["string", "null"],
-                  },
-                },
-
-                required: ["name", "phone", "email"],
-
-                additionalProperties: false,
+              name: { type: ["string", "null"] },
+              email: { type: ["string", "null"] },
+              phone: { type: ["string", "null"] },
+              lentDate: { type: ["string", "null"] },
+              dueDate: { type: ["string", "null"] },
+              amount: { type: ["number", "null"] },
+              interestRate: { type: ["number", "null"] },
+              interestType: {
+                type: ["string", "null"],
+                enum: ["SIMPLE", "COMPOUND", null],
               },
-
-              loan: {
-                type: "object",
-
-                properties: {
-                  amount: {
-                    type: ["number", "null"],
-                  },
-
-                  interestRate: {
-                    type: ["number", "null"],
-                  },
-
-                  interestType: {
-                    type: ["string", "null"],
-                  },
-
-                  lentDate: {
-                    type: ["string", "null"],
-                  },
-
-                  dueDate: {
-                    type: ["string", "null"],
-                  },
-
-                  notes: {
-                    type: ["string", "null"],
-                  },
-                },
-
-                required: [
-                  "amount",
-                  "interestRate",
-                  "interestType",
-                  "lentDate",
-                  "dueDate",
-                  "notes",
-                ],
-
-                additionalProperties: false,
-              },
+              street: { type: ["string", "null"] },
+              city: { type: ["string", "null"] },
+              state: { type: ["string", "null"] },
+              pincode: { type: ["string", "null"] },
+              notes: { type: ["string", "null"] },
             },
-
-            required: ["borrower", "loan"],
-
+            required: [
+              "name",
+              "email",
+              "phone",
+              "lentDate",
+              "dueDate",
+              "amount",
+              "interestRate",
+              "interestType",
+              "street",
+              "city",
+              "state",
+              "pincode",
+              "notes",
+            ],
             additionalProperties: false,
           },
         },
@@ -147,10 +119,17 @@ Dates should use YYYY-MM-DD format.
 
     console.log("EXTRACTED DATA:", extractedData);
 
+    const response = await apiClient.addBorrower(extractedData, {
+      headers: {
+        Cookie: `token=${token}`,
+      },
+    });
+
     return Response.json({
       success: true,
       transcript,
       data: extractedData,
+      borrowerResult: response.borrower || response,
     });
   } catch (error) {
     console.error("VOICE AI ERROR:", error);
